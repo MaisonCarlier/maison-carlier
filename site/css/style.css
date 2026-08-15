@@ -1,0 +1,1520 @@
+/* =========================================================
+   MAISON CARLIER — Feuille de style
+   Palette : or #D7AC57 · vert #1A4126 · crème vintage
+   ========================================================= */
+
+:root{
+  /* --- Couleurs de marque --- */
+  /* Un seul or sur tout le site. Les trois alias pointent sur la même
+     valeur : aucune déclinaison claire ou foncée. */
+  --gold:        #D7AC57;
+  --gold-light:  #D7AC57;
+  --gold-dark:   #D7AC57;
+  --gold-ink:    #D7AC57;
+
+  --green:       #1A4126;
+  --green-deep:  #1A4126;   /* alias — même vert */
+  --green-night: #1A4126;   /* alias — même vert */
+  --green-soft:  #E7EDE7;
+
+  --cream:       #FAF8F2;   /* crème clair */
+  --cream-warm:  #FDFCF8;
+  --cream-deep:  #EEE9DE;
+  --beige:       #EDE3CE;   /* beige soutenu : section réalisations */
+
+  --ink:         #1F2A21;
+  --ink-soft:    #4A554C;
+  --white:       #FFFFFF;
+
+  /* --- Typo --- */
+  --font-serif: "Forum", Georgia, serif;
+  --font-sans:  "Jost", "Helvetica Neue", Arial, sans-serif;
+
+  /* --- Rythme --- */
+  --container: 1240px;
+  --gutter: 24px;
+  --section-y: clamp(72px, 9vw, 130px);
+
+  /* --- Animation --- */
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --dur: .7s;
+
+  --header-h: 92px;
+
+  /* --- Échelle typographique fluide -----------------------------
+     Une seule progression, ratio ~1.22 en mobile et ~1.28 en grand
+     écran (clamp entre 360 et 1440 px). Aucune taille en dur ailleurs
+     dans la feuille : on choisit un cran, pas une valeur.
+     ------------------------------------------------------------- */
+  --f-2xs: clamp(.69rem, .66rem + .13vw, .75rem);
+  --f-xs:  clamp(.78rem, .75rem + .16vw, .86rem);
+  --f-sm:  clamp(.88rem, .84rem + .19vw, .98rem);
+  --f-md:  clamp(1rem,   .95rem + .24vw, 1.13rem);
+  --f-lg:  clamp(1.15rem, 1.07rem + .36vw, 1.35rem);
+  --f-xl:  clamp(1.35rem, 1.22rem + .6vw,  1.72rem);
+  --f-2xl: clamp(1.6rem,  1.38rem + .98vw, 2.2rem);
+  --f-3xl: clamp(1.95rem, 1.55rem + 1.78vw, 2.9rem);
+  --f-4xl: clamp(2.4rem,  1.7rem + 3.1vw,  4rem);
+  --f-5xl: clamp(3rem,    1.8rem + 5.3vw,  5.8rem);
+  --f-6xl: clamp(5rem,    3rem + 9vw,      9rem);
+
+  /* --- Interlignes : plus le texte est gros, plus il se resserre --- */
+  --lh-display: 1.05;
+  --lh-title:   1.16;
+  --lh-normal:  1.5;
+  --lh-body:    1.7;
+
+  /* --- Approche : négative en display, ouverte en capitales --- */
+  --ls-display: -.02em;
+  --ls-caps:     .16em;
+
+  /* --- Échelle d'espacement (base 4 px) --- */
+  --sp-3xs: .25rem;  --sp-2xs: .5rem;  --sp-xs: .75rem;
+  --sp-sm:  1rem;    --sp-md: 1.5rem;  --sp-lg: 2rem;
+  --sp-xl:  3rem;    --sp-2xl: 4rem;
+  --sp-3xl: clamp(4rem, 8vw, 7rem);
+
+  /* Signature de forme : le plein cintre, repris de carte en carte */
+  --arch: 999px 999px 0 0;
+
+  /* --- Motifs : grain de papier, écaille de toiture, chevron de charpente --- */
+  --pat-tile:  url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='44' height='22' viewBox='0 0 44 22'><g fill='none' stroke='%23000' stroke-width='1'><path d='M-22 22a22 22 0 0 1 44 0'/><path d='M22 22a22 22 0 0 1 44 0'/><path d='M0 22a22 22 0 0 1 44 0'/></g></svg>");
+  --pat-chev:  url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='24' viewBox='0 0 48 24'><g fill='none' stroke='%23000' stroke-width='1'><path d='M0 24 24 0l24 24'/><path d='M0 12 24-12l24 24'/></g></svg>");
+  --pat-grain: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23g)' opacity='0.55'/></svg>");
+}
+
+/* ---------------------------------------------------------
+   RESET
+   --------------------------------------------------------- */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  font-family:var(--font-sans);
+  font-weight:300;
+  font-size:16px;
+  line-height:1.65;
+  color:var(--ink);
+  background:var(--cream-warm);
+  overflow-x:hidden;
+}
+body.is-locked{ overflow:hidden; }
+
+/* Grain de papier sur toute la page : la surface n'est jamais
+   parfaitement lisse, comme une impression sur papier de création. */
+body::after{
+  content:""; position:fixed; inset:0; z-index:900;
+  background:var(--pat-grain);
+  opacity:.30; mix-blend-mode:multiply;
+  pointer-events:none;
+}
+img,svg{ display:block; max-width:100%; }
+img{ height:auto; }
+a{ color:inherit; text-decoration:none; }
+ul,ol{ margin:0; padding:0; list-style:none; }
+h1,h2,h3,h4{
+  margin:0; font-family:var(--font-serif); font-weight:400; line-height:1.15;
+  text-wrap:balance;          /* évite le mot orphelin en fin de titre */
+  font-variant-numeric:oldstyle-nums;
+}
+p{ margin:0; }
+button{ font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; }
+::selection{ background:var(--gold); color:var(--green-deep); }
+
+/* Les ancres s'arrêtent sous le header fixe, jamais dessous */
+section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
+
+.container{ width:100%; max-width:var(--container); margin-inline:auto; padding-inline:var(--gutter); }
+.section{ padding-block:var(--section-y); }
+
+/* ---------------------------------------------------------
+   INTRO
+   Séquence courte : le logo monte, le filet s'ouvre, le slogan se
+   dépose comme une encre qui sèche. Le tout tient en 2 secondes.
+   --------------------------------------------------------- */
+.intro{
+  position:fixed; inset:0; z-index:9999;
+  display:grid; place-items:center;
+  background:var(--green-deep);
+  overflow:hidden;
+}
+/* halo doré qui se dilate très lentement derrière le logo */
+.intro::before{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(64% 56% at 50% 44%, rgba(215,172,87,.13), transparent 74%);
+  opacity:0; transform:scale(.9);
+  animation:introGlow 1.6s var(--ease-out) .05s forwards;
+}
+@keyframes introGlow{ to{ opacity:1; transform:scale(1); } }
+
+.intro__inner{
+  position:relative; z-index:3;
+  display:flex; flex-direction:column; align-items:center; gap:26px;
+  padding-inline:24px;
+  transition:opacity .6s var(--ease), transform .8s var(--ease-out);
+}
+
+/* --- Le logo émerge : fondu long, échelle à peine perceptible --- */
+.intro__logo-wrap{ position:relative; display:block; line-height:0; }
+.intro__logo{
+  width:min(560px,86vw);
+  opacity:0;
+  transform:scale(.965);
+  animation:logoEmerge 1.05s cubic-bezier(.25,.46,.3,1) .05s forwards;
+}
+@keyframes logoEmerge{
+  to{ opacity:1; transform:scale(1); }
+}
+
+/* --- Ornement de la charte : se découvre du centre vers les bords.
+   Le dévoilement passe par clip-path et non par scaleX : une mise à
+   l'échelle écraserait la fleur de lys pendant toute l'animation. --- */
+.intro__rule{
+  display:block;
+  width:min(360px,70vw); aspect-ratio:88.98 / 10.76;
+  background:url("../assets/img/ornement.svg") center/contain no-repeat;
+  clip-path:inset(0 50% 0 50%);
+  animation:introRule .6s var(--ease-out) .8s forwards;
+}
+@keyframes introRule{ to{ clip-path:inset(0 0 0 0); } }
+
+/* --- Slogan : l'encre se dépose et se précise --- */
+.intro__slogan{
+  position:relative;
+  display:inline-block;
+  min-height:1.6em;
+}
+.intro__hand{
+  display:inline-block;
+  font-family:var(--font-serif);
+  font-size:clamp(1.35rem,3vw,1.95rem);
+  font-weight:400;
+  /* Forum n'existe qu'en romain : pas de faux italique penché. */
+  font-style:normal;
+  line-height:1.5;
+  letter-spacing:.03em;
+  color:var(--gold);
+  white-space:nowrap;
+  opacity:0;
+  filter:blur(7px);
+  transform:translateY(6px);
+  animation:inkSettle .8s cubic-bezier(.25,.46,.3,1) 1.2s forwards;
+}
+@keyframes inkSettle{
+  to{ opacity:1; filter:blur(0); transform:none; }
+}
+
+/* --- Sortie : les bandes se retirent et découvrent le site --------
+   Les panneaux couvrent déjà l'écran pendant toute l'intro ; ils
+   remontent ensuite en décalé. Le fond de l'intro passe en
+   transparent au même instant, donc chaque bande qui s'en va
+   laisse voir le hero au lieu d'un autre aplat vert.
+   ------------------------------------------------------------------ */
+.intro__curtain{
+  position:absolute; inset:0; z-index:1;   /* derrière le logo, devant la page */
+  display:flex; pointer-events:none;
+}
+.intro__curtain span{
+  flex:1; background:var(--green-deep);
+  transform:translateY(0);
+  transition:transform .7s cubic-bezier(.66,0,.28,1);
+  will-change:transform;
+}
+
+.intro.is-leaving{ background:transparent; }
+.intro.is-leaving::before{ opacity:0; transition:opacity .3s var(--ease); }
+.intro.is-leaving .intro__inner{
+  opacity:0; transform:translateY(-16px);
+  transition:opacity .3s var(--ease), transform .5s var(--ease-out);
+}
+.intro.is-leaving .intro__curtain span{ transform:translateY(-101%); }
+
+/* départs échelonnés : le toit se découvre par pans successifs */
+.intro.is-leaving .intro__curtain span:nth-child(1){ transition-delay:.06s; }
+.intro.is-leaving .intro__curtain span:nth-child(2){ transition-delay:.14s; }
+.intro.is-leaving .intro__curtain span:nth-child(3){ transition-delay:0s;   }
+.intro.is-leaving .intro__curtain span:nth-child(4){ transition-delay:.10s; }
+.intro.is-leaving .intro__curtain span:nth-child(5){ transition-delay:.18s; }
+
+@media (prefers-reduced-motion:reduce){
+  .intro::before, .intro__logo, .intro__hand, .intro__rule{
+    animation:none; opacity:1; filter:none; transform:none;
+  }
+}
+
+/* ---------------------------------------------------------
+   BARRE DE PROGRESSION
+   --------------------------------------------------------- */
+.scroll-progress{
+  position:fixed; top:0; left:0; z-index:1200;
+  height:3px; width:0;
+  background:var(--gold);
+  transition:width .1s linear;
+}
+
+/* ---------------------------------------------------------
+   BOUTONS
+   --------------------------------------------------------- */
+/* Le bouton ne bouge pas : une teinte monte du bas, comme de l'encre
+   qui imbibe le papier. Le remplissage se fait via background-size,
+   donc aucun calque au-dessus du texte. */
+.btn{
+  position:relative;
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:12px 24px;
+  font-size:var(--f-xs); font-weight:450; letter-spacing:.07em; text-transform:uppercase;
+  border:1px solid transparent;
+  background-repeat:no-repeat;
+  background-position:center bottom;
+  background-size:100% 0%;
+  transition:
+    background-size .5s var(--ease-out),
+    color .45s var(--ease),
+    border-color .45s var(--ease);
+}
+.btn:hover{ background-size:100% 100%; }
+.btn:active{ background-size:100% 100%; opacity:.9; }
+.btn:focus-visible{ outline:1px solid var(--gold); outline-offset:3px; }
+
+/* Bouton or plein : un voile sombre monte du bas, l'or reste le même */
+.btn--gold{
+  background-color:var(--gold);
+  background-image:linear-gradient(rgba(26,65,38,.22),rgba(26,65,38,.22));
+  color:var(--green-deep);
+}
+
+/* Boutons filaires : le fond se remplit, le texte s'inverse */
+.btn--ghost{
+  border-color:rgba(255,255,255,.5);
+  background-image:linear-gradient(var(--cream),var(--cream));
+  color:var(--white);
+}
+.btn--ghost:hover{ color:var(--green-deep); border-color:var(--cream); }
+
+.btn--outline{
+  border-color:rgba(26,65,38,.35);
+  background-image:linear-gradient(var(--gold),var(--gold));
+  color:var(--green);
+}
+.btn--outline:hover{ color:var(--green-deep); border-color:var(--gold); }
+
+/* Filaire foncé, pour les fonds clairs (hero) */
+.btn--ink{
+  border-color:rgba(26,65,38,.35);
+  background-image:linear-gradient(var(--green),var(--green));
+  color:var(--green);
+}
+.btn--ink:hover{ color:var(--cream); border-color:var(--green); }
+
+.btn--full{ width:100%; }
+
+/* ---------------------------------------------------------
+   HEADER
+   --------------------------------------------------------- */
+.header{
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  background:var(--green);
+  transition:background-color .4s var(--ease), box-shadow .4s var(--ease), transform .45s var(--ease);
+}
+.header.is-scrolled{ background:rgba(26,65,38,.96); backdrop-filter:blur(10px); box-shadow:0 10px 34px rgba(0,0,0,.22); }
+.header.is-hidden{ transform:translateY(-100%); }
+
+/* Trois colonnes égales sur les côtés : le menu reste optiquement centré
+   dans le header, quelle que soit la largeur du logo ou du bouton. */
+.header__inner{
+  max-width:var(--container); margin-inline:auto;
+  padding:0 var(--gutter);
+  height:var(--header-h);
+  display:flex; align-items:center; gap:24px;
+  transition:height .4s var(--ease);
+}
+.header.is-scrolled .header__inner{ height:74px; }
+
+.header__logo{ justify-self:start; }
+.header__logo img{ width:132px; transition:width .4s var(--ease); }
+.header.is-scrolled .header__logo img{ width:112px; }
+
+/* `display:contents` fait remonter .nav__list et .nav__actions
+   directement dans le flex du header.
+   La liste occupe tout l'espace laissé entre le logo et les boutons
+   et s'y centre : elle est donc à égale distance des deux, quelles
+   que soient leurs largeurs respectives. */
+.nav{ display:contents; }
+.nav__list{
+  flex:1 1 auto; min-width:0;
+  display:flex; align-items:center; justify-content:center; gap:34px;
+}
+.nav__actions{
+  flex:0 0 auto;
+  display:flex; align-items:center; gap:12px;
+}
+
+/* Bouton d'appel : le numéro reste lisible, l'icône sonne au survol */
+.nav__phone{
+  display:inline-flex; align-items:center; gap:9px;
+  padding:10px 16px;
+  border:1px solid var(--gold);
+  font-size:var(--f-xs); font-weight:450; letter-spacing:.03em;
+  color:var(--white);
+  white-space:nowrap;
+  background-repeat:no-repeat; background-position:center bottom; background-size:100% 0%;
+  background-image:linear-gradient(var(--gold),var(--gold));
+  transition:color .35s var(--ease), background-size .5s var(--ease-out);
+}
+.nav__phone svg{
+  width:16px; height:16px; flex:none;
+  fill:var(--gold); stroke:none;
+  transition:transform .45s var(--ease-out), fill .35s var(--ease);
+}
+.nav__phone:hover{ color:var(--green-deep); background-size:100% 100%; }
+.nav__phone:hover svg{ fill:var(--green-deep); animation:phoneRing .6s var(--ease) 1; }
+@keyframes phoneRing{
+  0%,100%{ transform:rotate(0); }
+  20%{ transform:rotate(-14deg); }
+  45%{ transform:rotate(12deg); }
+  70%{ transform:rotate(-7deg); }
+}
+.nav__link{
+  position:relative;
+  color:rgba(255,255,255,.88);
+  font-size:var(--f-sm); letter-spacing:.02em;
+  padding-block:6px;
+  transition:color .3s var(--ease);
+}
+.nav__link::after{
+  content:""; position:absolute; left:0; bottom:0;
+  width:100%; height:1px; background:var(--gold);
+  transform:scaleX(0); transform-origin:right;
+  transition:transform .4s var(--ease-out);
+}
+.nav__link:hover,.nav__link.is-current{ color:var(--white); }
+.nav__link:hover::after,.nav__link.is-current::after{ transform:scaleX(1); transform-origin:left; }
+/* Même corps, même padding, même bordure que le cadre du numéro :
+   les deux blocs font exactement la même hauteur. */
+.nav__cta{
+  padding:10px 18px;
+  font-size:var(--f-xs);
+  letter-spacing:.05em;
+  border:1px solid var(--gold);
+}
+.nav__cta::after{ display:none; }
+
+/* Burger */
+.burger{ display:none; width:44px; height:44px; position:relative; }
+.burger span{
+  position:absolute; left:11px; width:22px; height:1.5px; background:var(--white);
+  transition:transform .4s var(--ease-out), opacity .25s;
+}
+.burger span:nth-child(1){ top:16px; }
+.burger span:nth-child(2){ top:22px; }
+.burger span:nth-child(3){ top:28px; }
+.burger.is-open span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
+.burger.is-open span:nth-child(2){ opacity:0; }
+.burger.is-open span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
+
+/* ---------------------------------------------------------
+   HERO — parallaxe à deux plans
+   Le paysage recule, la maison avance. Chaque plan se déplace à
+   sa propre vitesse : c'est l'écart entre les deux qui crée la
+   profondeur, pas le déplacement lui-même.
+   --------------------------------------------------------- */
+.hero{
+  position:relative;
+  min-height:min(100vh,940px);
+  display:flex; align-items:center;
+  padding-top:var(--header-h);
+  overflow:hidden;
+  background:var(--cream);
+  isolation:isolate;
+}
+
+.hero__stage{ position:absolute; inset:0; z-index:0; }
+.hero__layer{
+  position:absolute; left:50%; bottom:0;
+  width:126%; min-width:1200px; height:auto;
+  transform:translate3d(-50%,0,0);
+  will-change:transform;
+}
+/* le paysage remonte : on garde l'horizon dans le champ */
+.hero__layer--sky{
+  bottom:auto; top:0;
+  height:100%; width:100%; min-width:0;
+  object-fit:cover; object-position:center 62%;
+  filter:saturate(.72) contrast(1.02) brightness(1.04);
+}
+/* la maison est calée sur le bas du cadre */
+.hero__layer--house{
+  bottom:-6%;
+  filter:saturate(.92) contrast(1.02);
+}
+
+/* Voile crème sur la gauche : le titre se pose sur du clair */
+.hero__veil{
+  position:absolute; inset:0; z-index:1;
+  background:
+    linear-gradient(95deg,
+      rgba(250,248,242,.97) 0%,
+      rgba(250,248,242,.90) 20%,
+      rgba(250,248,242,.66) 38%,
+      rgba(250,248,242,.32) 55%,
+      rgba(250,248,242,.08) 74%,
+      rgba(250,248,242,0) 92%),
+    linear-gradient(180deg, rgba(250,248,242,.75) 0%, transparent 24%),
+    linear-gradient(0deg, rgba(250,248,242,.55) 0%, transparent 20%);
+}
+
+.hero__content{ position:relative; z-index:2; padding-block:80px; }
+.hero__title{
+  font-size:var(--f-5xl);
+  color:var(--green);
+  line-height:1.02;
+  letter-spacing:-.015em;
+  margin-bottom:26px;
+}
+.hero__text{
+  color:var(--ink-soft);
+  font-size:var(--f-md);
+  max-width:34ch;
+  margin-bottom:38px;
+}
+.hero__actions{ display:flex; flex-wrap:wrap; gap:16px; }
+
+.hero__scroll{
+  position:absolute; z-index:3; bottom:34px; left:50%; transform:translateX(-50%);
+  width:1px; height:64px; overflow:hidden;
+}
+.hero__scroll-line{ position:absolute; inset:0; background:var(--gold); animation:scrollLine 2.2s var(--ease) infinite; }
+@keyframes scrollLine{
+  0%{ transform:translateY(-100%); } 45%{ transform:translateY(0); }
+  55%{ transform:translateY(0); } 100%{ transform:translateY(100%); }
+}
+
+@media (max-width:900px){
+  .hero__layer--house{ width:170%; bottom:-2%; }
+  .hero__veil{
+    background:
+      linear-gradient(180deg, rgba(250,248,242,.96) 0%, rgba(250,248,242,.86) 34%, rgba(250,248,242,.18) 68%, transparent 88%),
+      linear-gradient(0deg, rgba(250,248,242,.6) 0%, transparent 22%);
+  }
+}
+
+/* ---------------------------------------------------------
+   MÉTÉO CHANTIER
+   Bandeau alimenté par Open-Meteo. Masqué tant que la donnée
+   n'est pas arrivée : mieux vaut rien qu'un bandeau vide.
+   --------------------------------------------------------- */
+.weather{
+  background:var(--green);
+  color:var(--white);
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.weather[hidden]{ display:none; }
+
+.weather__inner{
+  display:flex; align-items:center; gap:16px;
+  padding-block:13px;
+  font-size:var(--f-xs);
+}
+.weather__icon{ display:block; flex:none; }
+.weather__icon svg{
+  width:24px; height:24px;
+  fill:var(--gold); stroke:none;
+}
+
+.weather__now{
+  display:flex; align-items:center; gap:12px;
+  letter-spacing:.04em;
+}
+.weather__now strong{
+  font-weight:500; letter-spacing:var(--ls-caps); text-transform:uppercase;
+}
+.weather__now strong::after{
+  content:""; display:inline-block;
+  width:4px; height:4px; margin-left:12px; vertical-align:middle;
+  background:var(--gold); transform:rotate(45deg);
+}
+.weather__desc{ color:rgba(255,255,255,.7); }
+
+/* Statut d'intervention, poussé à droite */
+.weather__status{
+  display:flex; align-items:center; gap:10px;
+  margin-left:auto;
+  letter-spacing:.04em;
+}
+.weather__dot{
+  width:8px; height:8px; flex:none;
+  border-radius:50%;
+  background:#5FBF7A;
+  box-shadow:0 0 0 0 rgba(95,191,122,.6);
+  animation:weatherPulse 2.4s ease-out infinite;
+}
+@keyframes weatherPulse{
+  0%  { box-shadow:0 0 0 0 rgba(95,191,122,.55); }
+  70% { box-shadow:0 0 0 9px rgba(95,191,122,0); }
+  100%{ box-shadow:0 0 0 0 rgba(95,191,122,0); }
+}
+/* conditions dégradées : interventions adaptées */
+.weather.is-limited .weather__dot{
+  background:var(--gold);
+  animation:none; box-shadow:none;
+}
+/* vent fort ou orage : pas de montée en toiture */
+.weather.is-stopped .weather__dot{
+  background:#D9714E;
+  animation:none; box-shadow:none;
+}
+
+@media (max-width:820px){
+  .weather__inner{ flex-wrap:wrap; gap:9px 14px; }
+  .weather__status{ margin-left:0; width:100%; }
+}
+
+/* ---------------------------------------------------------
+   BANDEAU VALEURS
+   --------------------------------------------------------- */
+/* Courses de tuiles en filigrane : le motif du métier, assez pâle
+   pour rester une texture et non un décor. */
+.values{
+  position:relative;
+  background:var(--cream);
+  border-bottom:1px solid var(--cream-deep);
+}
+.values::before{
+  content:""; position:absolute; inset:0;
+  background:var(--pat-tile) center top/44px 22px repeat;
+  opacity:.055;
+  pointer-events:none;
+}
+.values > *{ position:relative; z-index:1; }
+.values__grid{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  padding-block:38px;
+}
+.value{
+  display:flex; align-items:center; gap:16px;
+  padding-inline:26px;
+  border-left:1px solid rgba(26,65,38,.16);
+}
+.value:first-child{ border-left:0; padding-left:0; }
+.value__icon{
+  width:40px; height:40px; flex:none;
+  fill:var(--green); stroke:none;
+  transition:transform .5s var(--ease-out), fill .3s var(--ease);
+}
+.value:hover .value__icon{ transform:translateY(-4px) scale(1.06); fill:var(--gold-dark); }
+.value h3{
+  font-family:var(--font-sans); font-size:var(--f-2xs); font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--green);
+  margin-bottom:4px;
+}
+.value p{ font-size:var(--f-sm); color:var(--ink-soft); line-height:1.45; }
+
+/* ---------------------------------------------------------
+   TITRES DE SECTION
+   --------------------------------------------------------- */
+.section__head{ text-align:center; margin-bottom:clamp(46px,5vw,72px); }
+.eyebrow{
+  display:block;
+  font-size:var(--f-2xs); letter-spacing:.24em; text-transform:uppercase;
+  color:var(--gold-ink); font-weight:500;
+  margin-bottom:var(--sp-xs);
+}
+.eyebrow--gold{ color:var(--gold); }
+.realisations .eyebrow--gold{ color:var(--gold-ink); }
+
+/* Ornement de la charte : filets et fleur de lys, fichier fourni
+   par le client. Le SVG porte déjà l'or #D7AC57. */
+.ornament{
+  display:block;
+  width:190px; aspect-ratio:88.98 / 10.76;
+  margin:0 auto 20px;
+  background:url("../assets/img/ornement.svg") center/contain no-repeat;
+}
+.ornament--sm{ width:140px; margin-block:12px 14px; }
+.ornament--left{ margin-inline:0 auto; margin-left:0; }
+
+/* Sur fond vert, l'ornement reste lisible : il est déjà doré */
+.realisations .ornament, .faq .ornament{ opacity:.95; }
+
+.section__title{ font-size:var(--f-3xl); color:var(--green-deep); }
+.section__title--left{ text-align:left; }
+.realisations .section__title{ color:var(--green); }
+
+/* ---------------------------------------------------------
+   EXPERTISES — cartes
+   --------------------------------------------------------- */
+.expertises{ background:var(--cream-warm); }
+.cards{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.card{
+  position:relative; overflow:hidden;
+  background:var(--cream-warm);
+  min-height:clamp(480px,44vw,640px);
+  /* Plein cintre : la forme des anciennes verrières d'atelier.
+     Le rayon est plafonné à la moitié de la largeur, l'arc reste
+     donc un demi-cercle quelle que soit la colonne. */
+  border-radius:var(--arch);
+  display:flex; align-items:flex-end;
+  transition:transform .55s var(--ease-out), box-shadow .55s var(--ease-out);
+}
+.card:hover{ z-index:2; }
+.card__media{ position:absolute; inset:0; }
+.card__media img{
+  width:100%; height:100%; object-fit:cover;
+  filter:grayscale(1) contrast(1.05) brightness(.82);
+  transition:transform .9s var(--ease-out), filter .7s var(--ease);
+}
+.card:hover .card__media img{ transform:scale(1.09); filter:grayscale(0) brightness(.9); }
+/* Dégradé noir neutre : la photo garde ses couleurs, seul le bas
+   s'assombrit pour porter le texte. */
+.card__media::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg,
+    transparent 28%,
+    rgba(253,252,248,.55) 58%,
+    rgba(253,252,248,.94) 84%,
+    var(--cream-warm) 100%);
+  transition:background .6s var(--ease);
+}
+.card:hover .card__media::after{
+  background:linear-gradient(180deg,
+    transparent 34%,
+    rgba(253,252,248,.48) 60%,
+    rgba(253,252,248,.92) 84%,
+    var(--cream-warm) 100%);
+}
+
+.card__body{ position:relative; z-index:2; padding:36px 24px 42px; text-align:center; width:100%; }
+.card__title{ font-size:var(--f-2xl); color:var(--green); }
+.card__body p{ font-size:var(--f-sm); color:var(--ink-soft); line-height:1.6; }
+.card__body .ornament--sm{
+  transform:scaleX(.55); opacity:.7;
+  transition:transform .55s var(--ease-out), opacity .4s;
+}
+.card:hover .ornament--sm{ transform:scaleX(1); opacity:1; }
+
+/* ---------------------------------------------------------
+   CHIFFRES — cachets de cire (images fournies)
+   Le chiffre est gravé dans l'image : pas de texte superposé,
+   pas de compteur. L'alt porte l'information pour les lecteurs
+   d'écran et les moteurs de recherche.
+   --------------------------------------------------------- */
+/* Papier vert : le grain et l'assombrissement des bords se posent
+   sur l'aplat de marque. Le vert reste le vert, la matière vient
+   par-dessus en fusion, pas par une autre couleur. */
+.stats{
+  position:relative;
+  background:var(--green);
+  padding-block:clamp(38px,4.5vw,60px);
+  border-block:1px solid rgba(255,255,255,.10);
+}
+.stats::after{
+  content:""; position:absolute; inset:0;
+  background:
+    var(--pat-grain),
+    radial-gradient(130% 100% at 50% 50%, transparent 48%, rgba(0,0,0,.35) 100%);
+  mix-blend-mode:multiply;
+  opacity:.55;
+  pointer-events:none;
+}
+.stats > *{ position:relative; z-index:1; }
+
+.stats__grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; text-align:center; }
+.stat{ position:relative; display:flex; flex-direction:column; align-items:center; gap:12px; }
+
+/* Séparateur : l'ornement de la charte, dressé à la verticale.
+   Il reprend la fleur de lys plutôt qu'un simple filet — le même
+   motif que les en-têtes de section, tourné d'un quart de tour. */
+.stat + .stat::before{
+  content:"";
+  position:absolute; left:-12px; top:50%;
+  width:clamp(90px,11vw,132px); aspect-ratio:88.98 / 10.76;
+  transform:translate(-50%,-50%) rotate(90deg);
+  background:url("../assets/img/ornement.svg") center/contain no-repeat;
+  opacity:.8;
+  pointer-events:none;
+}
+
+/* Cachets de cire : posés à plat. Pas de frappe, pas d'onde, pas de
+   survol — seulement une ombre courte qui les décolle du papier. */
+.seal{
+  width:clamp(88px,9vw,116px); height:auto;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.28));
+}
+
+/* chaque cachet posé de travers, comme à la main */
+.stat:nth-child(1){ --rot:-5deg; }
+.stat:nth-child(2){ --rot:4deg;  }
+.stat:nth-child(3){ --rot:-2deg; }
+.stat:nth-child(4){ --rot:6deg;  }
+.seal{ transform:rotate(var(--rot,0deg)); }
+
+.stat__label{
+  display:block; max-width:16ch;
+  font-size:var(--f-2xs); letter-spacing:.14em; text-transform:uppercase;
+  color:rgba(255,255,255,.78);
+  line-height:1.5;
+}
+
+/* ---------------------------------------------------------
+   RÉALISATIONS
+   --------------------------------------------------------- */
+.realisations{
+  position:relative;
+  background:
+    radial-gradient(1000px 460px at 12% 0%, rgba(26,65,38,.06), transparent 70%),
+    var(--beige);
+  color:var(--ink);
+}
+.realisations::before{
+  content:""; position:absolute; inset:0;
+  background:var(--pat-tile) center top/52px 26px repeat;
+  opacity:.05;
+  pointer-events:none;
+}
+.realisations > *{ position:relative; z-index:1; }
+.realisations__inner{ display:grid; grid-template-columns:0.8fr 2fr; gap:clamp(32px,4vw,64px); align-items:center; }
+.realisations__aside .btn{ margin-top:26px; }
+
+/* --- Carrousel de comparateurs avant / après -------------------
+   Une seule photo par écran, la poignée découpe l'image du haut
+   par clip-path : aucun conteneur imbriqué, donc aucun risque de
+   déformation quand la fenêtre change de taille.
+   --------------------------------------------------------------- */
+.carousel__viewport{ overflow:hidden; }
+.carousel__track{
+  display:flex;
+  transition:transform .7s var(--ease-out);
+  will-change:transform;
+}
+.carousel__slide, .ba__slide{ flex:0 0 100%; min-width:0; }
+
+.ba{
+  position:relative;
+  /* Format proche du 4/5 : les photos de chantier sont prises au
+     téléphone, en portrait. Un cadre 16/10 en couperait l'essentiel. */
+  aspect-ratio:5/4;
+  overflow:hidden;
+  border-radius:var(--arch);
+  background:var(--green-night);
+  touch-action:pan-y;
+  cursor:ew-resize;
+  user-select:none;
+}
+.ba__img{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover; object-position:center 42%;
+  pointer-events:none;
+}
+/* la photo « avant » est découpée à la position de la poignée */
+.ba__img--before{
+  clip-path:inset(0 calc(100% - var(--pos,50%)) 0 0);
+}
+
+/* Poignée */
+.ba__handle{
+  position:absolute; top:0; bottom:0;
+  left:var(--pos,50%);
+  width:2px; margin-left:-1px;
+  background:var(--cream);
+  box-shadow:0 0 0 1px rgba(0,0,0,.18);
+  cursor:ew-resize;
+  padding:0;
+}
+.ba__handle::before{
+  content:""; position:absolute; top:50%; left:50%;
+  width:52px; height:52px; margin:-26px 0 0 -26px;
+  border:1px solid var(--cream);
+  border-radius:50%;
+  background:rgba(26,65,38,.45);
+  backdrop-filter:blur(3px);
+  transition:transform .35s var(--ease-out), background-color .35s var(--ease);
+}
+/* deux chevrons dessinés en bordures, pas d'icône à charger */
+.ba__handle::after{
+  content:""; position:absolute; top:50%; left:50%;
+  width:11px; height:11px; margin:-5.5px 0 0 -5.5px;
+  border-top:1.5px solid var(--cream);
+  border-right:1.5px solid var(--cream);
+  transform:rotate(45deg);
+  opacity:.9;
+}
+.ba:hover .ba__handle::before{ transform:scale(1.08); background:rgba(26,65,38,.6); }
+.ba__handle:focus-visible{ outline:none; }
+.ba__handle:focus-visible::before{ border-color:var(--gold); box-shadow:0 0 0 3px rgba(215,172,87,.35); }
+
+/* Étiquettes : deux fonds distincts, sinon rien ne dit lequel est
+   lequel une fois la poignée déplacée. */
+.ba__tag{
+  position:absolute; top:16px;
+  padding:8px 15px;
+  font-size:var(--f-2xs); font-weight:500;
+  letter-spacing:var(--ls-caps); text-transform:uppercase;
+  pointer-events:none;
+  transition:opacity .3s var(--ease);
+}
+.ba__tag--before{
+  left:16px;
+  color:var(--white);
+  background:rgba(20,20,20,.72);
+  backdrop-filter:blur(3px);
+}
+.ba__tag--after{
+  right:16px;
+  color:var(--green-deep);
+  background:var(--gold);
+}
+
+/* Consigne d'usage : disparaît dès la première manipulation */
+.ba__hint{
+  position:absolute; left:50%; bottom:20px;
+  transform:translateX(-50%);
+  display:flex; align-items:center; gap:9px;
+  padding:9px 16px;
+  font-size:var(--f-2xs); letter-spacing:.14em; text-transform:uppercase;
+  color:var(--green-deep);
+  background:var(--cream);
+  white-space:nowrap;
+  pointer-events:none;
+  animation:hintPulse 2.4s var(--ease) infinite;
+}
+.ba__hint::before,
+.ba__hint::after{
+  content:""; width:6px; height:6px;
+  border-top:1.4px solid var(--green-deep);
+  border-right:1.4px solid var(--green-deep);
+}
+.ba__hint::before{ transform:rotate(-135deg); }
+.ba__hint::after{ transform:rotate(45deg); }
+@keyframes hintPulse{
+  0%,100%{ opacity:.92; transform:translateX(-50%) scale(1); }
+  50%    { opacity:1;   transform:translateX(-50%) scale(1.03); }
+}
+.ba.is-touched .ba__hint{ opacity:0; animation:none; }
+
+.ba__meta{ margin-top:22px; }
+.ba__meta h3{ font-size:var(--f-xl); color:var(--green); }
+.ba__meta p{ margin-top:4px; font-size:var(--f-sm); color:var(--ink-soft); letter-spacing:.05em; }
+
+/* Commandes */
+.carousel__controls{
+  display:flex; align-items:center; gap:22px;
+  margin-top:30px;
+}
+.carousel__arrow{
+  width:46px; height:46px; flex:none;
+  display:grid; place-items:center;
+  border:1px solid rgba(26,65,38,.30);
+  transition:background-color .35s var(--ease), border-color .35s var(--ease);
+}
+.carousel__arrow svg{
+  width:18px; height:18px;
+  fill:none; stroke:var(--green); stroke-width:1.4;
+  stroke-linecap:round; stroke-linejoin:round;
+  transition:stroke .35s var(--ease);
+}
+.carousel__arrow:hover{ background:var(--gold); border-color:var(--gold); }
+.carousel__arrow:hover svg{ stroke:var(--green-deep); }
+
+.carousel__dots{ display:flex; align-items:center; gap:16px; margin-inline:auto 0; }
+.carousel__dots button{
+  display:block; flex:none;
+  width:9px; height:9px; padding:0;
+  border:1px solid rgba(26,65,38,.45);
+  transform:rotate(45deg);
+  transition:background-color .4s var(--ease), border-color .4s var(--ease), transform .45s var(--ease-out);
+}
+.carousel__dots button.is-active{
+  background:var(--gold); border-color:var(--gold);
+  transform:rotate(45deg) scale(1.5);
+}
+
+/* ---------------------------------------------------------
+   PROCESSUS — cartes empilées
+   Chaque carte se fige sous le header, la suivante glisse
+   par-dessus avec un décalage vertical croissant : à la fin,
+   les quatre étapes forment une pile visible.
+   --------------------------------------------------------- */
+/* Chevrons : l'assemblage d'une ferme de charpente. */
+.process{ position:relative; background:var(--cream-warm); overflow:visible; }
+.process::before{
+  content:""; position:absolute; inset:0;
+  background:var(--pat-chev) center/48px 24px repeat;
+  opacity:.05;
+  -webkit-mask-image:radial-gradient(120% 90% at 50% 0%, #000 20%, transparent 78%);
+          mask-image:radial-gradient(120% 90% at 50% 0%, #000 20%, transparent 78%);
+  pointer-events:none;
+}
+.process > *{ position:relative; z-index:1; }
+
+.process__lead{
+  max-width:56ch; margin:18px auto 0;
+  color:var(--ink-soft); font-size:var(--f-md);
+}
+
+.stack{ max-width:900px; margin-inline:auto; }
+
+.scard{
+  position:sticky;
+  /* chaque carte s'arrête 20 px plus bas que la précédente :
+     c'est ce décalage qui rend la pile lisible */
+  top:calc(var(--header-h) + 34px + var(--i) * 20px);
+  display:flex; align-items:flex-start; gap:clamp(20px,3vw,40px);
+  min-height:clamp(230px,26vw,290px);
+  margin-bottom:clamp(40px,6vw,80px);
+  padding:clamp(30px,4vw,48px) clamp(26px,4vw,52px);
+  background:var(--cream);
+  border:1px solid var(--cream-deep);
+  border-top:2px solid var(--gold);
+  box-shadow:0 -2px 0 rgba(255,255,255,.8), 0 22px 44px -26px rgba(26,65,38,.30);
+  overflow:hidden;
+}
+.scard:last-child{ margin-bottom:0; }
+
+/* Chiffre en réserve : dessiné au trait plutôt qu'en aplat pâle.
+   Un contour se lit même très clair, là où un remplissage à 6 %
+   disparaissait dans le fond de la carte. */
+.scard__ghost{
+  position:absolute; right:clamp(16px,2.5vw,34px); bottom:clamp(10px,1.5vw,22px);
+  font-family:var(--font-serif); font-weight:400;
+  font-size:clamp(6.5rem,13vw,10.5rem); line-height:1;
+  color:transparent;
+  -webkit-text-stroke:1.5px var(--gold);
+          text-stroke:1.5px var(--gold);
+  opacity:.7;
+  pointer-events:none; user-select:none;
+  transition:opacity .5s var(--ease);
+}
+.scard:hover .scard__ghost{ opacity:.8; }
+
+.scard__body{ position:relative; z-index:1; max-width:52ch; }
+.scard__title{ font-size:var(--f-2xl); color:var(--green); margin-bottom:12px; }
+.scard__text{ color:var(--ink-soft); font-size:var(--f-md); }
+
+@media (max-width:900px){
+  .scard{
+    position:static;                 /* pas d'empilement sur petit écran */
+    min-height:0;
+    margin-bottom:18px;
+  }
+  .scard__ghost{ font-size:6rem; -webkit-text-stroke-width:1.2px; }
+}
+
+/* ---------------------------------------------------------
+   TÉMOIGNAGES
+   --------------------------------------------------------- */
+.testimonials{ position:relative; overflow:hidden; background:var(--cream); }
+.testimonials__media{ position:absolute; inset:-20% 0; z-index:0; }
+/* Noir et blanc, un peu en retrait : la photo devient un décor,
+   pas un sujet. */
+.testimonials__media img{
+  width:100%; height:100%; object-fit:cover; object-position:64% 46%;
+  filter:grayscale(1) contrast(1.06);
+  opacity:.58;
+}
+/* Fondu crème sur la gauche, comme dans le hero : le témoignage
+   se pose sur du clair, la photo se révèle vers la droite. */
+.testimonials__veil{
+  position:absolute; inset:0; z-index:1;
+  background:
+    linear-gradient(95deg,
+      rgba(250,248,242,.96) 0%,
+      rgba(250,248,242,.88) 22%,
+      rgba(250,248,242,.66) 42%,
+      rgba(250,248,242,.38) 60%,
+      rgba(250,248,242,.16) 78%,
+      rgba(250,248,242,.04) 95%),
+    linear-gradient(180deg, rgba(250,248,242,.5) 0%, transparent 18%),
+    linear-gradient(0deg, rgba(250,248,242,.5) 0%, transparent 16%);
+}
+.testimonials__inner{ position:relative; z-index:2; padding-block:clamp(48px,5vw,76px); }
+
+/* Guillemet d'ouverture, hors du carrousel : il annonce la section
+   et reste fixe pendant que les avis défilent. */
+.quotes__mark{
+  display:block;
+  font-family:var(--font-serif); font-weight:400;
+  font-size:var(--f-4xl); line-height:.5;
+  color:var(--gold-dark);
+  margin-bottom:22px;
+  user-select:none;
+}
+
+.quotes{ position:relative; max-width:600px; min-height:158px; }
+.quote{
+  position:absolute; inset:0; margin:0;
+  opacity:0; transform:translateY(16px);
+  transition:opacity .6s var(--ease), transform .6s var(--ease-out);
+  pointer-events:none;
+}
+.quote.is-active{ opacity:1; transform:none; pointer-events:auto; }
+.quote p{
+  color:var(--green);
+  font-family:var(--font-serif);
+  font-size:var(--f-xl); line-height:1.55;
+}
+.quote cite{
+  display:block; margin-top:16px; font-style:normal;
+  color:var(--gold-ink); font-size:var(--f-xs); letter-spacing:.14em; text-transform:uppercase;
+}
+
+/* Puces en losange, comme le motif des ornements de section */
+.quotes__dots{ display:flex; align-items:center; gap:18px; margin-top:26px; }
+.quotes__dots button{
+  display:block; flex:none;
+  width:10px; height:10px; padding:0;
+  border:1px solid rgba(26,65,38,.45);
+  transform:rotate(45deg);
+  transition:background-color .4s var(--ease), border-color .4s var(--ease), transform .45s var(--ease-out);
+}
+.quotes__dots button:hover{ border-color:var(--gold-ink); transform:rotate(45deg) scale(1.2); }
+.quotes__dots button.is-active{
+  background:var(--gold); border-color:var(--gold);
+  transform:rotate(45deg) scale(1.5);
+}
+
+/* ---------------------------------------------------------
+   GARANTIES
+   --------------------------------------------------------- */
+.perks{ background:var(--cream); padding-block:44px; }
+.perks__grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+.perk{ display:flex; align-items:center; gap:15px; }
+.perk svg{
+  width:38px; height:38px; flex:none;
+  fill:var(--green); stroke:none;
+  transition:transform .5s var(--ease-out), fill .3s var(--ease);
+}
+.perk:hover svg{ transform:translateY(-4px) rotate(-4deg); fill:var(--gold-dark); }
+.perk h3{
+  font-family:var(--font-sans); font-size:var(--f-2xs); font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--green); margin-bottom:2px;
+}
+.perk p{ font-size:var(--f-sm); color:var(--ink-soft); }
+
+/* ---------------------------------------------------------
+   FAQ — sur fond vert
+   L'ouverture anime grid-template-rows de 0fr à 1fr : la hauteur
+   réelle est calculée par le navigateur, pas par un max-height
+   arbitraire qui saccade sur les réponses longues.
+   --------------------------------------------------------- */
+.faq{ position:relative; background:var(--green); color:var(--white); }
+.faq .section__title{ color:var(--white); }
+.faq .eyebrow{ color:var(--gold); }
+
+.faq__list{ max-width:860px; margin-inline:auto; }
+
+.faq__item{ border-bottom:1px solid rgba(255,255,255,.16); }
+.faq__item:first-child{ border-top:1px solid rgba(255,255,255,.16); }
+
+.faq__q{
+  width:100%; padding:26px 8px 26px 0;
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+  text-align:left;
+  font-family:var(--font-serif); font-size:var(--f-lg);
+  color:var(--white);
+  transition:color .3s var(--ease);
+}
+.faq__q:hover{ color:var(--gold); }
+.faq__q:focus-visible{ outline:1px solid var(--gold); outline-offset:4px; }
+
+.faq__caret{
+  width:20px; height:20px; flex:none;
+  fill:var(--gold); stroke:none;
+  transition:transform .45s var(--ease-out);
+}
+.faq__item.is-open .faq__caret{ transform:rotate(180deg); }
+.faq__item.is-open .faq__q{ color:var(--gold); }
+
+.faq__a{
+  display:grid; grid-template-rows:0fr;
+  transition:grid-template-rows .5s var(--ease-out);
+}
+.faq__item.is-open .faq__a{ grid-template-rows:1fr; }
+.faq__a-inner{ overflow:hidden; }
+.faq__a p{
+  padding:0 48px 28px 0;
+  color:rgba(255,255,255,.76); font-size:var(--f-sm); line-height:1.75;
+  opacity:0; transform:translateY(-6px);
+  transition:opacity .4s var(--ease) .1s, transform .4s var(--ease-out) .1s;
+}
+.faq__item.is-open .faq__a p{ opacity:1; transform:none; }
+
+.faq__more{
+  margin-top:38px; text-align:center;
+  font-size:var(--f-sm); color:rgba(255,255,255,.72);
+}
+.faq__more a{ color:var(--gold); border-bottom:1px solid var(--gold); }
+.faq__more a:hover{ color:var(--white); border-color:var(--white); }
+
+/* ---------------------------------------------------------
+   DEVIS / FORMULAIRE
+   --------------------------------------------------------- */
+.devis{ position:relative; background:var(--cream-warm); }
+.devis::before{
+  content:""; position:absolute; inset:0;
+  background:var(--pat-tile) center top/56px 28px repeat;
+  opacity:.05;
+  -webkit-mask-image:linear-gradient(180deg, #000, transparent 65%);
+          mask-image:linear-gradient(180deg, #000, transparent 65%);
+  pointer-events:none;
+}
+.devis > *{ position:relative; z-index:1; }
+.devis__inner{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(36px,5vw,80px); align-items:start; }
+.devis__intro .section__title{ margin-bottom:20px; }
+.devis__intro > p{ color:var(--ink-soft); max-width:44ch; }
+/* Chaque ligne de contact est précédée de son icône, alignée sur
+   la première ligne de texte (l'adresse tient sur deux lignes). */
+.devis__contact{ margin-top:28px; display:grid; gap:16px; }
+.devis__contact li{
+  display:flex; align-items:flex-start; gap:13px;
+  font-size:var(--f-md); color:var(--green-deep); line-height:1.5;
+}
+.devis__contact .ico{
+  width:20px; height:20px; flex:none; margin-top:2px;
+  fill:var(--gold-ink); stroke:none;
+  transition:fill .3s var(--ease), transform .4s var(--ease-out);
+}
+.devis__contact li:hover .ico{ fill:var(--green); transform:translateY(-2px); }
+.devis__contact a{ position:relative; }
+.devis__contact a::after{
+  content:""; position:absolute; left:0; bottom:-2px; width:100%; height:1px;
+  background:var(--gold); transform:scaleX(0); transform-origin:right;
+  transition:transform .4s var(--ease-out);
+}
+.devis__contact a:hover::after{ transform:scaleX(1); transform-origin:left; }
+
+.form{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.field{ position:relative; }
+.field--full{ grid-column:1/-1; }
+.form > .btn, .form__status{ grid-column:1/-1; }
+
+.field input,.field select,.field textarea{
+  width:100%; padding:20px 16px 8px;
+  font-family:var(--font-sans); font-size:var(--f-sm); font-weight:300; color:var(--ink);
+  background:var(--white);
+  border:1px solid var(--cream-deep); border-radius:0;
+  transition:border-color .3s var(--ease), box-shadow .3s var(--ease);
+  appearance:none;
+}
+.field select{ padding-top:14px; color:var(--ink-soft); cursor:pointer; }
+.field textarea{ resize:vertical; padding-top:24px; }
+.field label{
+  position:absolute; left:16px; top:16px;
+  font-size:var(--f-sm); color:var(--ink-soft);
+  pointer-events:none;
+  transition:transform .28s var(--ease-out), font-size .28s var(--ease-out), color .28s;
+  transform-origin:left top;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(215,172,87,.18);
+}
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label,
+.field textarea:focus + label,
+.field textarea:not(:placeholder-shown) + label{
+  transform:translateY(-9px) scale(.72); color:var(--gold-dark);
+}
+.field.has-error input,.field.has-error select,.field.has-error textarea{ border-color:#b1442f; }
+
+.form__status{ font-size:var(--f-sm); min-height:1.2em; }
+.form__status.is-ok{ color:var(--green); }
+.form__status.is-ko{ color:#b1442f; }
+
+/* ---------------------------------------------------------
+   FOOTER
+   --------------------------------------------------------- */
+.footer{
+  position:relative; overflow:hidden;
+  background:var(--green-deep); color:rgba(255,255,255,.78);
+  padding-top:clamp(52px,6vw,78px);
+}
+.footer::before{
+  content:""; position:absolute; inset:0;
+  background:var(--pat-chev) center/56px 28px repeat;
+  opacity:.05; filter:invert(1);
+  pointer-events:none;
+}
+.footer > *{ position:relative; z-index:1; }
+.footer__grid{
+  display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr;
+  gap:38px; padding-bottom:46px;
+}
+.footer__brand img{ width:190px; margin-bottom:18px; }
+.footer__brand p{ font-size:var(--f-sm); max-width:32ch; line-height:1.65; }
+.footer__col h4{
+  font-family:var(--font-sans); font-size:var(--f-2xs); font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--white); margin-bottom:18px;
+}
+.footer__col ul{ display:grid; gap:13px; }
+.footer__col li{ display:flex; align-items:flex-start; gap:11px; font-size:var(--f-sm); line-height:1.5; }
+.footer__col .ico{
+  width:17px; height:17px; flex:none; margin-top:3px;
+  fill:var(--gold); stroke:none;
+}
+.footer__col a{ position:relative; transition:color .3s; }
+.footer__col a:hover{ color:var(--gold); }
+.footer__col--cta{ display:grid; gap:22px; align-content:start; justify-items:start; }
+
+.socials{ display:flex; gap:14px; }
+.socials a{
+  width:52px; height:52px; display:grid; place-items:center;
+  border:1px solid rgba(255,255,255,.28);
+  transition:background-color .35s var(--ease), border-color .35s, transform .35s var(--ease-out);
+}
+.socials svg{ width:25px; height:25px; fill:currentColor; stroke:none; }
+.socials a:hover{ background:var(--gold); border-color:var(--gold); color:var(--green-deep); transform:translateY(-3px); }
+
+.footer__bottom{
+  display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between;
+  padding-block:20px;
+  border-top:1px solid rgba(255,255,255,.12);
+  font-size:var(--f-xs); color:rgba(255,255,255,.55);
+}
+
+/* ---------------------------------------------------------
+   BARRE D'APPEL MOBILE
+   Dans la zone du pouce : sur un site d'artisan, l'appel est
+   la conversion principale et le trafic est majoritairement mobile.
+   --------------------------------------------------------- */
+.callbar{ display:none; }
+
+@media (max-width:900px){
+  .callbar{
+    position:fixed; left:0; right:0; bottom:0; z-index:1100;
+    display:grid; grid-template-columns:1fr 1fr;
+    background:var(--green-deep);
+    box-shadow:0 -8px 28px rgba(0,0,0,.24);
+    padding-bottom:env(safe-area-inset-bottom);
+    transform:translateY(100%);
+    transition:transform .45s var(--ease-out);
+  }
+  body.is-ready .callbar{ transform:translateY(0); }
+  body.is-locked .callbar{ transform:translateY(100%); }
+
+  .callbar__item{
+    padding:17px 12px; text-align:center;
+    font-size:var(--f-xs); font-weight:450; letter-spacing:.1em; text-transform:uppercase;
+  }
+  .callbar__item--call{ color:var(--white); border-right:1px solid rgba(255,255,255,.16); }
+  .callbar__item--quote{ background:var(--gold); color:var(--green-deep); }
+
+  /* le pied de page ne doit pas finir sous la barre */
+  .footer__bottom{ padding-bottom:76px; }
+}
+
+/* ---------------------------------------------------------
+   PLACEHOLDERS D'IMAGES (avant que les photos soient posées)
+   --------------------------------------------------------- */
+.media.is-empty,
+.hero__media.is-empty,
+.testimonials__media.is-empty{
+  background:
+    repeating-linear-gradient(45deg, rgba(26,65,38,.10) 0 12px, rgba(26,65,38,.16) 12px 24px),
+    linear-gradient(160deg, var(--green) 0%, var(--green-night) 100%);
+}
+.media.is-empty::before,
+.hero__media.is-empty::before,
+.testimonials__media.is-empty::before{
+  content:attr(data-file);
+  position:absolute; inset:0; z-index:3;
+  display:grid; place-items:center; text-align:center; padding:16px;
+  font-family:var(--font-sans); font-size:var(--f-2xs); letter-spacing:.1em; text-transform:uppercase;
+  color:rgba(255,255,255,.55);
+}
+img.is-missing{ visibility:hidden; }
+
+/* ---------------------------------------------------------
+   ANIMATIONS AU SCROLL
+   --------------------------------------------------------- */
+[data-reveal]{
+  opacity:0;
+  transition:opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+  transition-delay:var(--d,0ms);
+  will-change:opacity, transform;
+}
+[data-reveal="up"]{ transform:translateY(38px); }
+[data-reveal="left"]{ transform:translateX(-38px); }
+[data-reveal="right"]{ transform:translateX(38px); }
+[data-reveal="scale"]{ transform:scale(.94); }
+[data-reveal].is-in{ opacity:1; transform:none; }
+
+/* Titres découpés en mots */
+[data-split]{ overflow:hidden; }
+.word{ display:inline-block; overflow:hidden; vertical-align:top; }
+.word > span{
+  display:inline-block;
+  transform:translateY(105%);
+  transition:transform .95s var(--ease-out);
+  transition-delay:var(--d,0ms);
+}
+[data-split].is-in .word > span{ transform:translateY(0); }
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------- */
+@media (max-width:1080px){
+  .cards{ grid-template-columns:repeat(2,1fr); }
+  .card{ min-height:clamp(400px,58vw,520px); }
+  .realisations__inner{ grid-template-columns:1fr; }
+  .footer__grid{ grid-template-columns:1fr 1fr; }
+}
+
+@media (max-width:900px){
+  :root{ --header-h:76px; }
+
+
+  /* Le header repasse en deux blocs : logo à gauche, burger à droite. */
+  .header__inner{ display:flex; justify-content:space-between; }
+
+  /* .nav redevient une boîte : le panneau plein écran. */
+  .nav{
+    position:fixed; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:32px;
+    background:var(--green-deep);
+    transform:translateX(100%);
+    transition:transform .5s var(--ease-out);
+    padding:80px 24px;
+  }
+  .nav.is-open{ transform:translateX(0); }
+  .nav__list{ display:flex; flex-direction:column; align-items:center; gap:26px; }
+  .nav__actions{ display:flex; flex-direction:column; align-items:center; gap:26px; justify-self:auto; }
+  .nav__phone{ font-size:var(--f-lg); opacity:0; transform:translateY(18px); animation-delay:.40s; }
+  .nav__cta{ justify-self:auto; }
+
+  .nav__link{ font-size:var(--f-xl); font-family:var(--font-serif); opacity:0; transform:translateY(18px); }
+  .nav.is-open .nav__link,
+  .nav.is-open .nav__phone,
+  .nav.is-open .nav__cta{ animation:navIn .5s var(--ease-out) forwards; }
+  .nav.is-open .nav__link:nth-child(1){ animation-delay:.10s; }
+  .nav.is-open .nav__link:nth-child(2){ animation-delay:.16s; }
+  .nav.is-open .nav__link:nth-child(3){ animation-delay:.22s; }
+  .nav.is-open .nav__link:nth-child(4){ animation-delay:.28s; }
+  .nav.is-open .nav__link:nth-child(5){ animation-delay:.34s; }
+  .nav__cta{ opacity:0; transform:translateY(18px); animation-delay:.46s; }
+  @keyframes navIn{ to{ opacity:1; transform:none; } }
+  .burger{ display:block; position:relative; z-index:1001; }
+
+  .values__grid{ grid-template-columns:repeat(2,1fr); gap:26px 0; }
+  .value{ padding-inline:18px; }
+  .value:nth-child(odd){ border-left:0; padding-left:0; }
+
+  .stats__grid{ grid-template-columns:repeat(2,1fr); gap:34px 20px; }
+  .stat:nth-child(odd)::before{ display:none; }
+  .perks__grid{ grid-template-columns:repeat(2,1fr); gap:24px; }
+  .devis__inner{ grid-template-columns:1fr; }
+
+  /* Hero : la flèche de défilement tomberait derrière la barre d'appel */
+  .hero{ min-height:auto; padding-bottom:64px; }
+  .hero__scroll{ display:none; }
+  .header__logo img{ width:112px; }
+
+  /* Témoignages : le dégradé passe à la verticale, sinon le texte
+     se pose sur les silhouettes au lieu du ciel */
+  .testimonials__veil{
+    background:
+      linear-gradient(180deg, rgba(250,248,242,.95) 0%, rgba(250,248,242,.86) 38%, rgba(250,248,242,.30) 72%, rgba(250,248,242,.10) 100%),
+      linear-gradient(0deg, rgba(250,248,242,.6) 0%, transparent 24%);
+  }
+  .quotes{ min-height:210px; }
+
+  /* Comparateur : cadre plus haut, la poignée reste atteignable */
+  .ba{ aspect-ratio:4/5; }
+  .carousel__controls{ gap:14px; margin-top:22px; }
+
+  /* FAQ : la réponse ne doit plus réserver 48 px à droite */
+  .faq__a p{ padding-right:8px; }
+  .faq__q{ padding-block:22px; gap:16px; }
+}
+
+@media (max-width:600px){
+  .cards{ grid-template-columns:1fr; }
+  .card{ min-height:440px; }
+  .values__grid{ grid-template-columns:1fr; }
+  .stats__grid{ grid-template-columns:1fr; }
+  .stat::before{ display:none; }
+  .perks__grid{ grid-template-columns:1fr; }
+  .form{ grid-template-columns:1fr; }
+  .footer__grid{ grid-template-columns:1fr; }
+  .hero__actions .btn{ width:100%; }
+  .footer__bottom{ flex-direction:column; }
+
+  /* Sections moins étirées : 72 px de respiration en haut ET en bas
+     font perdre un demi-écran à chaque passage */
+  :root{ --section-y:clamp(52px,11vw,72px); }
+
+  .scard{ padding:26px 22px; }
+  .scard__ghost{ right:12px; bottom:8px; }
+
+  .ba__hint{ font-size:9px; padding:7px 12px; letter-spacing:.1em; }
+  .ba__tag{ top:10px; padding:6px 11px; }
+  .ba__tag--before{ left:10px; }
+  .ba__tag--after{ right:10px; }
+  .ba__handle::before{ width:44px; height:44px; margin:-22px 0 0 -22px; }
+
+  .quotes__mark{ margin-bottom:16px; }
+  .socials a{ width:46px; height:46px; }
+  .devis__contact li{ font-size:var(--f-sm); }
+}
+
+/* --- Très petits écrans (≤ 380 px) ------------------------------
+   iPhone SE et compagnie : on retire tout ce qui déborde.
+   ---------------------------------------------------------------- */
+@media (max-width:380px){
+  :root{ --gutter:16px; }
+
+  .card{ min-height:400px; }
+  .scard{ padding:22px 18px; }
+  .scard__ghost{ font-size:5rem; }
+
+  .ba__hint{ display:none; }        /* la pastille dépassait du cadre */
+  .carousel__arrow{ width:42px; height:42px; }
+
+  .seal{ width:96px; }
+  .stat__label{ max-width:20ch; }
+
+  .callbar__item{ padding:15px 8px; font-size:11px; letter-spacing:.06em; }
+
+  .weather__inner{ font-size:11px; }
+  .weather__now{ gap:8px; }
+}
+
+/* ---------------------------------------------------------
+   ACCESSIBILITÉ — mouvement réduit
+   --------------------------------------------------------- */
+@supports not (grid-template-rows: 1fr){
+  .faq__a{ max-height:0; overflow:hidden; transition:max-height .5s var(--ease-out); }
+  .faq__item.is-open .faq__a{ max-height:400px; }
+}
+
+/* Animations liées à la position de scroll : l'élément avance et
+   recule avec le doigt au lieu de se déclencher en tout ou rien.
+   Aucun JavaScript, calcul fait par le compositeur. */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    html.svt [data-reveal]{
+      opacity:1; transform:none;
+      animation:svtReveal linear both;
+      animation-timeline:view();
+      animation-range:entry 8% cover 34%;
+    }
+    html.svt [data-reveal="left"]{ animation-name:svtRevealLeft; }
+    html.svt [data-reveal="scale"]{ animation-name:svtRevealScale; }
+  }
+}
+@keyframes svtReveal{      from{ opacity:0; transform:translateY(38px); } to{ opacity:1; transform:none; } }
+@keyframes svtRevealLeft{  from{ opacity:0; transform:translateX(-38px); } to{ opacity:1; transform:none; } }
+@keyframes svtRevealScale{ from{ opacity:0; transform:scale(.94); }        to{ opacity:1; transform:none; } }
+
+/* Sur petits écrans le grain coûte cher au défilement pour un gain nul */
+@media (max-width:600px){
+  body::after{ display:none; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important; animation-iteration-count:1 !important;
+    transition-duration:.01ms !important; scroll-behavior:auto !important;
+  }
+  [data-reveal]{ opacity:1 !important; transform:none !important; }
+  .word > span{ transform:none !important; }
+}

@@ -1,0 +1,47 @@
+MAISON CARLIER — PHOTOS À DÉPOSER DANS CE DOSSIER
+==================================================
+
+Glisse tes photos ici avec EXACTEMENT ces noms de fichiers.
+Tant qu'une photo manque, le site affiche un aplat vert avec le nom
+du fichier attendu. Dès que tu la déposes, elle s'affiche : rien à
+modifier dans le code.
+
+FICHIER                          FORMAT     DIMENSIONS      OÙ ÇA S'AFFICHE
+--------------------------------------------------------------------------------
+hero-toiture.jpg                 paysage    2400 x 1400     Grande image d'accueil        [POSÉE]
+expertise-couverture.jpg         portrait    900 x 1200     Carte « Couverture »
+expertise-charpente.jpg          portrait    900 x 1200     Carte « Charpente »           [POSÉE]
+expertise-zinguerie.jpg          portrait    900 x 1200     Carte « Zinguerie »
+expertise-renovation.jpg         portrait    900 x 1200     Carte « Rénovation »
+equipe.jpg                       paysage    2000 x 1200     Fond section témoignages
+
+AVANT / APRÈS — carrousel des réalisations
+--------------------------------------------------------------------------------
+realisation-1-avant.jpg          paysage    1400 x 900      Rénovation de toiture
+realisation-1-apres.jpg          paysage    1400 x 900
+realisation-2-avant.jpg          paysage    1400 x 900      Charpente traditionnelle
+realisation-2-apres.jpg          paysage    1400 x 900
+realisation-3-avant.jpg          paysage    1400 x 900      Zinguerie sur mesure
+realisation-3-apres.jpg          paysage    1400 x 900
+realisation-4-avant.jpg          paysage    1400 x 900      Isolation & rénovation
+realisation-4-apres.jpg          paysage    1400 x 900
+
+RÈGLE ABSOLUE POUR LES AVANT / APRÈS
+--------------------------------------------------------------------------------
+Les deux photos d'un même chantier doivent être prises :
+  - depuis le MÊME endroit (même recul, même hauteur)
+  - avec le MÊME cadrage et le même objectif
+  - si possible à la même heure et par temps comparable
+
+Le comparateur superpose les deux images au pixel près. Si le point de
+vue bouge, la toiture « saute » quand on déplace la poignée et l'effet
+est raté. Un repère au sol lors de la photo « avant » suffit.
+
+CONSEILS
+--------------------------------------------------------------------------------
+- Poids : moins de 400 Ko par photo (compresse sur squoosh.app ou tinypng.com).
+- Le hero est recouvert d'un dégradé crème à gauche : privilégie une photo
+  lumineuse avec de l'espace vide sur la gauche (le titre s'y pose).
+- Les cartes « expertises » ont le haut en plein cintre : ne place pas le
+  sujet trop haut dans le cadre, les angles supérieurs sont rognés.
+- Format .jpg uniquement (convertis vraiment, ne renomme pas un .png).
