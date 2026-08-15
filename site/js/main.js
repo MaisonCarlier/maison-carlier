@@ -468,11 +468,13 @@
 
   /* -------------------------------------------------------
      15. Formulaire de devis
-     Aucun back-end pour l'instant : voir README pour brancher
-     Formspree / Netlify Forms / un script PHP.
+     Envoi vers la fonction serverless /api/contact, qui relaie
+     par email via Resend. La clé API reste côté serveur.
      ------------------------------------------------------- */
   var form = $('#devisForm');
   var status = $('#formStatus');
+
+  var submitBtn = $('button[type="submit"]', form);
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -493,9 +495,39 @@
       return;
     }
 
-    status.textContent = 'Demande prête à être envoyée — branchez le formulaire (voir README) pour la recevoir par email.';
-    status.classList.add('is-ok');
-    form.reset();
+    var libelle = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi en cours…';
+    status.textContent = '';
+
+    var donnees = {};
+    new FormData(form).forEach(function (v, k) { donnees[k] = v; });
+
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(donnees)
+    })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (data) {
+          if (!r.ok) throw new Error(data.error || 'Envoi impossible.');
+          return data;
+        });
+      })
+      .then(function () {
+        status.textContent = 'Merci, votre demande est bien partie. Nous vous répondons sous 24 h ouvrées.';
+        status.classList.add('is-ok');
+        form.reset();
+      })
+      .catch(function (err) {
+        status.textContent = (err.message || 'Envoi impossible.') +
+          ' Vous pouvez aussi nous écrire à ateliers@maison-carlier.fr.';
+        status.classList.add('is-ko');
+      })
+      .then(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = libelle;
+      });
   });
 
   $$('input, textarea, select', form).forEach(function (input) {

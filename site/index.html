@@ -551,6 +551,11 @@
         </select>
       </div>
       <div class="field field--full"><textarea id="message" name="message" rows="5" required placeholder=" "></textarea><label for="message">Votre projet</label></div>
+      <!-- Piège à robots : invisible et ignoré par les lecteurs d'écran. Rempli = spam. -->
+      <div class="hp" aria-hidden="true">
+        <label for="societe">Ne pas remplir</label>
+        <input type="text" id="societe" name="societe" tabindex="-1" autocomplete="off">
+      </div>
       <button type="submit" class="btn btn--gold btn--full">Envoyer ma demande</button>
       <p class="form__status" id="formStatus" role="status"></p>
     </form>

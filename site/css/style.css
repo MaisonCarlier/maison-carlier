@@ -1518,3 +1518,6 @@ img.is-missing{ visibility:hidden; }
   [data-reveal]{ opacity:1 !important; transform:none !important; }
   .word > span{ transform:none !important; }
 }
+
+/* Honeypot : hors flux et hors écran plutôt que display:none, que certains bots détectent */
+.hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
