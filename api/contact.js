@@ -1,7 +1,10 @@
 /* Réception du formulaire de devis → envoi d'un mail via Resend.
    La clé API reste côté serveur : elle ne doit jamais partir dans le HTML. */
 
-const DESTINATAIRE = 'ateliers@maison-carlier.fr';
+// Tant que maison-carlier.fr n'est pas vérifié chez Resend, l'envoi n'est autorisé
+// que vers l'adresse du compte. Une fois le domaine vérifié, basculer sur
+// ateliers@maison-carlier.fr via la variable d'environnement, sans toucher au code.
+const DESTINATAIRE = process.env.MAIL_DESTINATAIRE || 'contact.maison.carlier@gmail.com';
 
 // Sans domaine vérifié chez Resend, c'est le seul expéditeur autorisé,
 // et il n'envoie que vers l'adresse du compte Resend.
