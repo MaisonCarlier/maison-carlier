@@ -892,6 +892,22 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
 }
 .ba.is-touched .ba__hint{ opacity:0; animation:none; }
 
+/* Diapositive vidéo : même cadre que le comparateur, lecture en boucle.
+   Pas de contrôles : la vidéo est un visuel, pas un lecteur. */
+.vframe{
+  position:relative;
+  aspect-ratio:5/4;
+  overflow:hidden;
+  border-radius:var(--arch);
+  background:var(--green-night);
+}
+.vframe__video{
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:cover; object-position:center 45%;
+  display:block;
+}
+.vframe__tag{ pointer-events:none; }
+
 .ba__meta{ margin-top:22px; }
 .ba__meta h3{ font-size:var(--f-xl); color:var(--green); }
 .ba__meta p{ margin-top:4px; font-size:var(--f-sm); color:var(--ink-soft); letter-spacing:.05em; }

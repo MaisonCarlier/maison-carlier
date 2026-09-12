@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap : à décommenter et compléter le jour du nom de domaine
+# Sitemap: https://EXEMPLE.fr/sitemap.xml

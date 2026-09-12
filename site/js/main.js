@@ -347,6 +347,16 @@
       // les diapositives hors champ sortent de l'ordre de tabulation
       baSlides.forEach(function (sl, k) {
         sl.toggleAttribute('inert', k !== baIndex);
+        // seule la vidéo visible tourne : les autres ne consomment ni
+        // bande passante ni batterie tant qu'on ne les atteint pas
+        var vid = sl.querySelector('.vframe__video');
+        if (!vid) return;
+        if (k === baIndex && !reduced) {
+          var play = vid.play();
+          if (play && play.catch) play.catch(function () {});
+        } else {
+          vid.pause();
+        }
       });
     }
 
