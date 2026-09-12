@@ -510,11 +510,23 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
 
 @media (max-width:900px){
   .hero__layer--house{ width:170%; bottom:-2%; }
+  /* Le voile garde sa densité plus bas : le titre et l'accroche
+     reposent sur la partie claire, la charpente reprend ensuite. */
   .hero__veil{
     background:
-      linear-gradient(180deg, rgba(250,248,242,.96) 0%, rgba(250,248,242,.86) 34%, rgba(250,248,242,.18) 68%, transparent 88%),
+      linear-gradient(180deg, rgba(250,248,242,.97) 0%, rgba(250,248,242,.92) 42%, rgba(250,248,242,.55) 62%, rgba(250,248,242,.14) 78%, transparent 92%),
       linear-gradient(0deg, rgba(250,248,242,.6) 0%, transparent 22%);
   }
+
+  /* Le hero centrait son contenu verticalement : sur un écran haut et
+     étroit, le titre se retrouvait au milieu de l'image. On l'ancre
+     en haut, là où le voile est le plus opaque. */
+  .hero{ align-items:flex-start; }
+  .hero__content{ padding-block:28px 64px; }
+
+  /* Texte plus soutenu : posé sur une photo, même voilée, le gris
+     clair perdait en lisibilité. */
+  .hero__text{ color:var(--ink); max-width:38ch; margin-bottom:30px; }
 }
 
 /* ---------------------------------------------------------
