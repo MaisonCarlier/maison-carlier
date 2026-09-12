@@ -1513,12 +1513,29 @@ img.is-missing{ visibility:hidden; }
 @media (max-width:600px){
   .cards{ grid-template-columns:1fr; }
   .card{ min-height:440px; }
-  .values__grid{ grid-template-columns:1fr; }
+  /* Badges de rassurance : deux colonnes plutôt qu'une pile de quatre.
+     L'icône passe au-dessus du texte et tout se centre — aligné à
+     gauche dans une colonne étroite, le bloc paraissait bancal. */
+  .values__grid,
+  .perks__grid{ grid-template-columns:repeat(2,1fr); gap:30px 12px; }
+
+  .value,
+  .perk{
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    gap:10px;
+    padding-inline:6px;
+    border-left:0;
+  }
+  .value__icon,
+  .perk svg{ width:34px; height:34px; }
+  .value p,
+  .perk p{ text-wrap:balance; }
   /* Les cachets restent sur deux colonnes jusqu'en bas : en pile
      unique, la bande faisait quatre écrans pour quatre chiffres. */
   .stats__grid{ grid-template-columns:repeat(2,1fr); gap:30px 14px; }
   .stat::before{ display:none; }
-  .perks__grid{ grid-template-columns:1fr; }
   .form{ grid-template-columns:1fr; }
   .footer__grid{ grid-template-columns:1fr; }
   .hero__actions .btn{ width:100%; }
