@@ -1139,9 +1139,13 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
   user-select:none;
 }
 
-.quotes{ position:relative; max-width:600px; min-height:158px; }
+/* Les avis se superposent dans une seule cellule de grille plutôt
+   qu'en position absolue : le conteneur prend alors la hauteur du plus
+   long, à chaque largeur. Avec une hauteur réservée en dur, un avis
+   plus bavard que les autres passait sous les puces. */
+.quotes{ position:relative; max-width:600px; display:grid; }
 .quote{
-  position:absolute; inset:0; margin:0;
+  grid-area:1 / 1; margin:0;
   opacity:0; transform:translateY(16px);
   transition:opacity .6s var(--ease), transform .6s var(--ease-out);
   pointer-events:none;
@@ -1531,7 +1535,6 @@ img.is-missing{ visibility:hidden; }
       linear-gradient(180deg, rgba(250,248,242,.95) 0%, rgba(250,248,242,.86) 38%, rgba(250,248,242,.30) 72%, rgba(250,248,242,.10) 100%),
       linear-gradient(0deg, rgba(250,248,242,.6) 0%, transparent 24%);
   }
-  .quotes{ min-height:210px; }
 
   /* Comparateur : cadre plus haut, la poignée reste atteignable.
      Le cadre vidéo suit, sinon les diapositives n'ont pas la même
