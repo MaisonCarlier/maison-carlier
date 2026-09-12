@@ -1493,7 +1493,9 @@ img.is-missing{ visibility:hidden; }
   .cards{ grid-template-columns:1fr; }
   .card{ min-height:440px; }
   .values__grid{ grid-template-columns:1fr; }
-  .stats__grid{ grid-template-columns:1fr; }
+  /* Les cachets restent sur deux colonnes jusqu'en bas : en pile
+     unique, la bande faisait quatre écrans pour quatre chiffres. */
+  .stats__grid{ grid-template-columns:repeat(2,1fr); gap:30px 14px; }
   .stat::before{ display:none; }
   .perks__grid{ grid-template-columns:1fr; }
   .form{ grid-template-columns:1fr; }
