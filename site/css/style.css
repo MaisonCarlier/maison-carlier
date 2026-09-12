@@ -10,7 +10,9 @@
   --gold:        #D7AC57;
   --gold-light:  #D7AC57;
   --gold-dark:   #D7AC57;
-  --gold-ink:    #D7AC57;
+  /* Or destiné au texte sur fond clair. Il valait la même valeur que
+     --gold : 1,99:1 sur le crème, illisible. Assombri à 5:1. */
+  --gold-ink:    #8C6419;
 
   --green:       #1A4126;
   --green-deep:  #1A4126;   /* alias — même vert */
@@ -1151,8 +1153,9 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
   font-size:var(--f-xl); line-height:1.55;
 }
 .quote cite{
-  display:block; margin-top:16px; font-style:normal;
-  color:var(--gold-ink); font-size:var(--f-xs); letter-spacing:.14em; text-transform:uppercase;
+  display:block; margin-top:18px; font-style:normal;
+  color:var(--gold-ink); font-size:var(--f-sm); font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase;
 }
 
 /* Puces en losange, comme le motif des ornements de section */
