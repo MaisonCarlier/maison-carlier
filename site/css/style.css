@@ -1035,7 +1035,19 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
     min-height:0;
     margin-bottom:18px;
   }
-  .scard__ghost{ font-size:6rem; -webkit-text-stroke-width:1.2px; }
+  /* Sur grand écran le texte s'arrête à 52 caractères et le chiffre
+     occupe le vide à droite. Ici le texte prend toute la largeur :
+     le chiffre passait derrière les lignes. On le remonte au-dessus
+     du titre, où il devient un vrai numéro d'étape. */
+  .scard{ flex-direction:column; gap:0; }
+  .scard__ghost{
+    position:static;
+    font-size:2.7rem; line-height:1;
+    margin-bottom:10px;
+    opacity:1;
+    -webkit-text-stroke-width:1px;
+            text-stroke-width:1px;
+  }
 }
 
 /* ---------------------------------------------------------
@@ -1508,7 +1520,6 @@ img.is-missing{ visibility:hidden; }
   :root{ --section-y:clamp(52px,11vw,72px); }
 
   .scard{ padding:26px 22px; }
-  .scard__ghost{ right:12px; bottom:8px; }
 
   .ba__hint{ font-size:9px; padding:7px 12px; letter-spacing:.1em; }
   .ba__tag{ top:10px; padding:6px 11px; }
@@ -1529,7 +1540,7 @@ img.is-missing{ visibility:hidden; }
 
   .card{ min-height:400px; }
   .scard{ padding:22px 18px; }
-  .scard__ghost{ font-size:5rem; }
+  .scard__ghost{ font-size:2.4rem; }
 
   .ba__hint{ display:none; }        /* la pastille dépassait du cadre */
   .carousel__arrow{ width:44px; height:44px; }   /* 44 px : plancher tactile */
