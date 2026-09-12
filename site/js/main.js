@@ -161,6 +161,33 @@
     a.addEventListener('click', closeNav);
   });
 
+  /* Échap ferme le panneau et rend le focus au bouton : sans cela, un
+     visiteur au clavier reste enfermé dans un menu qu'il ne voit plus. */
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape' || !nav.classList.contains('is-open')) return;
+    closeNav();
+    burger.focus();
+  });
+
+  /* Le panneau garde le focus tant qu'il est ouvert : la tabulation
+     ne doit pas repartir dans la page masquée derrière. */
+  nav.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab' || !nav.classList.contains('is-open')) return;
+    var cibles = $$('a[href], button', nav).filter(function (el) {
+      return el.offsetWidth || el.offsetHeight;
+    });
+    if (!cibles.length) return;
+    var premier = cibles[0], dernier = cibles[cibles.length - 1];
+    if (e.shiftKey && document.activeElement === premier) { e.preventDefault(); dernier.focus(); }
+    else if (!e.shiftKey && document.activeElement === dernier) { e.preventDefault(); premier.focus(); }
+  });
+
+  /* Passage en écran large avec le menu ouvert : le panneau disparaît
+     mais le défilement du corps de page resterait bloqué. */
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 900 && nav.classList.contains('is-open')) closeNav();
+  });
+
   /* -------------------------------------------------------
      6. Titres découpés mot par mot
      ------------------------------------------------------- */
@@ -275,6 +302,16 @@
   /* -------------------------------------------------------
      10. Réalisations — carrousel de comparateurs avant/après
      ------------------------------------------------------- */
+  /* Une vidéo de chantier pèse 2 Mo. Sur un forfait compté ou une
+     connexion lente, on s'en tient à l'image d'aperçu : le visiteur
+     voit la même toiture, sans payer le débit. */
+  function economieDonnees() {
+    var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (!c) return false;
+    if (c.saveData) return true;
+    return /(^|-)2g$/.test(c.effectiveType || '');
+  }
+
   var baTrack = $('#baTrack');
 
   if (baTrack) {
@@ -351,7 +388,7 @@
         // bande passante ni batterie tant qu'on ne les atteint pas
         var vid = sl.querySelector('.vframe__video');
         if (!vid) return;
-        if (k === baIndex && !reduced) {
+        if (k === baIndex && !reduced && !economieDonnees()) {
           var play = vid.play();
           if (play && play.catch) play.catch(function () {});
         } else {
