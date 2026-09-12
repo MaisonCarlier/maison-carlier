@@ -553,6 +553,9 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
   background:var(--gold); transform:rotate(45deg);
 }
 .weather__desc{ color:rgba(255,255,255,.7); }
+/* Deux formulations du statut cohabitent dans le HTML ; c'est le
+   point de rupture qui décide laquelle s'affiche. */
+.weather__court{ display:none; }
 
 /* Statut d'intervention, poussé à droite */
 .weather__status{
@@ -584,8 +587,31 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
 }
 
 @media (max-width:820px){
-  .weather__inner{ flex-wrap:wrap; gap:9px 14px; }
-  .weather__status{ margin-left:0; width:100%; }
+  /* Le statut passait sur une deuxième ligne pleine largeur : 81 px de
+     bandeau vert pour trois informations, juste avant le premier
+     visuel. Tout revient sur une ligne, centrée. */
+  .weather__inner{
+    flex-wrap:nowrap;
+    justify-content:center;
+    gap:9px;
+    padding-block:9px;
+  }
+  /* L'icône dit déjà le temps qu'il fait : le libellé fait doublon
+     et c'est lui qui faisait déborder la ligne. */
+  .weather__desc{ display:none; }
+  .weather__now{ gap:9px; }
+  .weather__now strong::after{ margin-left:9px; }
+  .weather__status{ margin-left:0; width:auto; gap:7px; }
+  .weather__long{ display:none; }
+  .weather__court{ display:inline; }
+  .weather__icon svg{ width:19px; height:19px; }
+  .weather__dot{ width:7px; height:7px; }
+}
+
+/* Sous 400 px la ligne devient trop serrée : on garde le centrage
+   mais on autorise le retour à la ligne. */
+@media (max-width:400px){
+  .weather__inner{ flex-wrap:wrap; row-gap:5px; }
 }
 
 /* ---------------------------------------------------------
@@ -1577,7 +1603,6 @@ img.is-missing{ visibility:hidden; }
   .callbar__item{ padding:15px 8px; font-size:11px; letter-spacing:.06em; }
 
   .weather__inner{ font-size:11px; }
-  .weather__now{ gap:8px; }
 }
 
 /* --- Téléphone tenu à l'horizontale -----------------------------

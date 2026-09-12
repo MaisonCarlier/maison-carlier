@@ -466,7 +466,18 @@
           stopped: 'Montées en toiture suspendues — diagnostics et devis maintenus'
         }[w.state];
 
+        /* Version courte pour le téléphone : la phrase longue occupait
+           deux lignes en haut de page, avant même le premier visuel.
+           Les deux sont écrites, c'est la CSS qui choisit laquelle
+           montrer — pas de calcul de largeur en JavaScript. */
+        var court = {
+          ok:      'Équipes sur chantier',
+          limited: 'Interventions adaptées',
+          stopped: 'Montées suspendues · devis maintenus'
+        }[w.state];
+
         $('#weatherStatusText').textContent = texte;
+        $('#weatherStatusShort').textContent = court;
         if (w.state !== 'ok') weatherBox.classList.add('is-' + w.state);
         weatherBox.hidden = false;
       })
