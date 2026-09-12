@@ -15,6 +15,7 @@
   --green:       #1A4126;
   --green-deep:  #1A4126;   /* alias — même vert */
   --green-night: #1A4126;   /* alias — même vert */
+  --green-light: #27603A;   /* le vert éclairci, au survol */
   --green-soft:  #E7EDE7;
 
   --cream:       #FAF8F2;   /* crème clair */
@@ -304,13 +305,21 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
 }
 .btn--outline:hover{ color:var(--green-deep); border-color:var(--gold); }
 
-/* Filaire foncé, pour les fonds clairs (hero) */
+/* Vert plein dès le départ : au survol il s'éclaircit, sans remplissage
+   qui monte. La transition porte donc sur la couleur, pas sur la taille
+   du fond comme pour les autres boutons. */
 .btn--ink{
-  border-color:rgba(26,65,38,.35);
-  background-image:linear-gradient(var(--green),var(--green));
-  color:var(--green);
+  background-color:var(--green);
+  background-image:none;
+  border-color:var(--green);
+  color:var(--cream);
+  transition:background-color .35s var(--ease), border-color .35s var(--ease);
 }
-.btn--ink:hover{ color:var(--cream); border-color:var(--green); }
+.btn--ink:hover{
+  background-color:var(--green-light);
+  border-color:var(--green-light);
+}
+.btn--ink:active{ background-color:var(--green); opacity:1; }
 
 .btn--full{ width:100%; }
 
