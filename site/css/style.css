@@ -1431,9 +1431,12 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
   body.is-locked .callbar{ transform:translateY(100%); }
 
   .callbar__item{
+    display:flex; align-items:center; justify-content:center; gap:9px;
     padding:17px 12px; text-align:center;
     font-size:var(--f-xs); font-weight:450; letter-spacing:.1em; text-transform:uppercase;
   }
+  /* même icône que le numéro de l'en-tête, en or sur le vert */
+  .callbar__item svg{ width:17px; height:17px; flex:none; fill:var(--gold); stroke:none; }
   .callbar__item--call{ color:var(--white); border-right:1px solid rgba(255,255,255,.16); }
   .callbar__item--quote{ background:var(--gold); color:var(--green-deep); }
   .callbar__item{ transition:background-color .3s var(--ease); }
