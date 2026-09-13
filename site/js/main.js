@@ -214,20 +214,45 @@
   // Si le navigateur sait animer sur la timeline de scroll, le CSS
   // prend la main et l'observer devient inutile.
   var hasSVT = window.CSS && CSS.supports && CSS.supports('animation-timeline', 'view()');
-  if (hasSVT && !reduced) document.documentElement.classList.add('svt');
+
+  /* Sur téléphone, l'animation liée au doigt ne rend pas : les délais
+     de cascade sont ignorés, tout un rang bouge en bloc au rythme du
+     pouce et l'entrée passe inaperçue. On y préfère une entrée
+     déclenchée, jouée en entier une fois l'élément à l'écran. */
+  var narrow = window.matchMedia('(max-width: 900px)').matches;
+  var useSVT = hasSVT && !reduced && !narrow;
+  if (useSVT) document.documentElement.classList.add('svt');
 
   // Le hero est exclu : il est animé par endIntro(), pas par le scroll.
   var revealTargets = $$('[data-reveal], [data-split], .timeline').filter(function (el) {
-    return !el.closest('.hero') && !(hasSVT && el.hasAttribute('data-reveal'));
+    return !el.closest('.hero') && !(useSVT && el.hasAttribute('data-reveal'));
   });
   if ('IntersectionObserver' in window && !reduced) {
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add(e.target.classList.contains('timeline') ? 'is-drawn' : 'is-in');
-        io.unobserve(e.target);
+      var entrants = entries.filter(function (e) { return e.isIntersecting; })
+                            .map(function (e) { return e.target; });
+
+      /* Sur mobile les délais écrits dans le HTML sont pensés pour une
+         rangée de quatre : en grille 2×2, le quatrième élément attendait
+         300 ms alors qu'il arrive seul, sur la ligne suivante. On
+         recalcule la cascade à partir de ce qui entre ensemble, dans
+         l'ordre de lecture. */
+      if (narrow) {
+        entrants.sort(function (a, b) {
+          var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+          return (Math.round(ra.top / 40) - Math.round(rb.top / 40)) || (ra.left - rb.left);
+        });
+        entrants.filter(function (el) { return el.hasAttribute('data-reveal'); })
+                .forEach(function (el, i) {
+                  el.style.setProperty('--d', Math.min(i, 4) * 90 + 'ms');
+                });
+      }
+
+      entrants.forEach(function (el) {
+        el.classList.add(el.classList.contains('timeline') ? 'is-drawn' : 'is-in');
+        io.unobserve(el);
       });
-    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: narrow ? 0.1 : 0.15, rootMargin: '0px 0px -6% 0px' });
     revealTargets.forEach(function (el) { io.observe(el); });
   } else {
     revealTargets.forEach(function (el) { el.classList.add('is-in', 'is-drawn'); });

@@ -1458,6 +1458,37 @@ img.is-missing{ visibility:hidden; }
 [data-reveal="scale"]{ transform:scale(.94); }
 [data-reveal].is-in{ opacity:1; transform:none; }
 
+/* Mobile : trajets plus courts et courbe plus franche. 38 px sur un
+   écran de 390 px, c'est un dixième de la largeur — l'élément semble
+   tomber plutôt qu'apparaître. */
+@media (max-width:900px){
+  [data-reveal]{
+    transition-duration:.75s;
+    transition-timing-function:cubic-bezier(.22,1,.36,1);
+  }
+  [data-reveal="up"]{ transform:translateY(26px); }
+  [data-reveal="left"]{ transform:translateX(-22px); }
+  [data-reveal="right"]{ transform:translateX(22px); }
+  [data-reveal="scale"]{ transform:scale(.9); }
+  /* Une fois entré, l'élément rend sa couche au compositeur : sur un
+     téléphone, cinquante couches promues pèsent sur la mémoire. */
+  [data-reveal].is-in{ will-change:auto; }
+  .word > span{ transition-duration:.8s; }
+}
+
+/* Numéro d'étape : pas de data-reveal, sinon sur bureau l'animation
+   liée au scroll le fige à pleine opacité et écrase son 70 % et son
+   survol. Sur mobile il entre avec son texte, dès que celui-ci est là. */
+@supports selector(:has(*)){
+  @media (max-width:900px) and (prefers-reduced-motion:no-preference){
+    .scard__ghost{
+      opacity:0; transform:scale(.8); transform-origin:left bottom;
+      transition:opacity .6s var(--ease-out), transform .8s cubic-bezier(.22,1,.36,1);
+    }
+    .scard:has(.scard__body.is-in) .scard__ghost{ opacity:1; transform:none; }
+  }
+}
+
 /* Titres découpés en mots */
 [data-split]{ overflow:hidden; }
 .word{ display:inline-block; overflow:hidden; vertical-align:top; }
