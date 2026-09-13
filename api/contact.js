@@ -6,10 +6,11 @@
 // ateliers@maison-carlier.fr via la variable d'environnement, sans toucher au code.
 const DESTINATAIRE = process.env.MAIL_DESTINATAIRE || 'contact.maison.carlier@gmail.com';
 
-// Sans domaine vérifié chez Resend, c'est le seul expéditeur autorisé,
-// et il n'envoie que vers l'adresse du compte Resend.
-// Une fois maison-carlier.fr vérifié : remplacer par 'Site Maison Carlier <contact@maison-carlier.fr>'.
-const EXPEDITEUR = 'Site Maison Carlier <onboarding@resend.dev>';
+// Expéditeur réglable depuis Vercel, comme le destinataire. Par défaut,
+// l'adresse de test Resend : la seule autorisée tant que maison-carlier.fr
+// n'est pas vérifié, et qui n'envoie que vers l'adresse du compte Resend.
+// Une fois le domaine vérifié : MAIL_EXPEDITEUR = Site Maison Carlier <site@maison-carlier.fr>
+const EXPEDITEUR = process.env.MAIL_EXPEDITEUR || 'Site Maison Carlier <onboarding@resend.dev>';
 
 const SUJETS = ['Couverture', 'Charpente', 'Zinguerie', 'Rénovation / isolation', 'Autre'];
 
@@ -81,6 +82,8 @@ export default async function handler(req, res) {
         reply_to: email,
         subject: `Demande de devis — ${sujet} — ${nom}`,
         html,
+        // Version texte : les filtres anti-spam se méfient des mails HTML seuls.
+        text: `Nouvelle demande de devis\n\nNom : ${nom}\nEmail : ${email}\nTéléphone : ${tel || '—'}\nType de projet : ${sujet}\n\nMessage :\n${message}`,
       }),
     });
 
