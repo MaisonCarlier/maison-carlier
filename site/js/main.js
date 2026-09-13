@@ -338,6 +338,7 @@
   }
 
   var baTrack = $('#baTrack');
+  var baCarousel = $('#baCarousel');
 
   if (baTrack) {
     var baSlides = $$('.ba__slide', baTrack);
@@ -413,7 +414,7 @@
         // bande passante ni batterie tant qu'on ne les atteint pas
         var vid = sl.querySelector('.vframe__video');
         if (!vid) return;
-        if (k === baIndex && !reduced && !economieDonnees()) {
+        if (k === baIndex && carrouselVisible && !reduced && !economieDonnees()) {
           var play = vid.play();
           if (play && play.catch) play.catch(function () {});
         } else {
@@ -424,6 +425,21 @@
 
     $('#baPrev').addEventListener('click', function () { goSlide(baIndex - 1); });
     $('#baNext').addEventListener('click', function () { goSlide(baIndex + 1); });
+    /* La vidéo ne tourne que carrousel à l'écran. Sans ça, la première
+       diapositive — une vidéo — se téléchargeait et jouait dès l'arrivée
+       sur la page, même pour un visiteur qui ne descend jamais jusque-là. */
+    var carrouselVisible = false;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        carrouselVisible = entries[0].isIntersecting;
+        goSlide(baIndex);
+      }, { threshold: 0.25 }).observe($('.carousel__viewport', baCarousel));
+      // Le cadre fixe, pas la bande qui glisse : décalée vers la 3e
+      // diapositive, la bande n'était plus visible qu'à 22 % et la vidéo
+      // se mettait en pause en plein milieu de l'écran.
+    } else {
+      carrouselVisible = true;
+    }
     goSlide(0);
   }
 

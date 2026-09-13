@@ -937,7 +937,9 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
 .vframe__tag{ pointer-events:none; }
 /* La vidéo verticale est filmée au téléphone : en la recadrant en 5/4
    on perd le haut de la toiture. On lui laisse son format propre. */
-.vframe--portrait{ aspect-ratio:4/5; }
+/* Sur ordinateur, même cadre 5/4 que les autres diapositives : en 4/5
+   la vidéo verticale portait le carrousel de 648 à 1013 px de haut. Sur
+   mobile tous les cadres passent en 4/5 (voir plus bas), elle suit. */
 .vframe--portrait .vframe__video{ object-position:center center; }
 
 .ba__meta{ margin-top:22px; }
