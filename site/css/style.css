@@ -1553,9 +1553,13 @@ img.is-missing{ visibility:hidden; }
   }
   .nav.is-open{ transform:translateX(0); }
   .nav__list{ display:flex; flex-direction:column; align-items:center; gap:26px; }
-  .nav__actions{ display:flex; flex-direction:column; align-items:center; gap:26px; justify-self:auto; }
-  .nav__phone{ font-size:var(--f-lg); }
-  .nav__cta{ justify-self:auto; }
+  /* stretch : le bloc prend la largeur du plus large des deux boutons,
+     et les deux s'étirent à cette largeur — ils font la même taille. */
+  .nav__actions{ display:flex; flex-direction:column; align-items:stretch; gap:18px; justify-self:auto; }
+  .nav__phone{ font-size:var(--f-lg); justify-content:center; }
+  /* Devis gratuit au même gabarit que le numéro : même corps, même
+     marge intérieure. Il faisait 133×44 px contre 196×53. */
+  .nav__cta{ justify-self:auto; font-size:var(--f-lg); padding:10px 16px; letter-spacing:.03em; }
 
   .nav__link{ font-size:var(--f-xl); font-family:var(--font-serif); opacity:0; transform:translateY(18px); }
   .nav.is-open .nav__link{ animation:navIn .5s var(--ease-out) forwards; }
