@@ -259,6 +259,43 @@
   }
 
   /* -------------------------------------------------------
+     7 bis. Cartes d'expertise : la carte survolée s'élargit
+     L'état est tenu ici plutôt que par :hover. Entre deux cartes, la
+     souris traverse l'espace qui les sépare : avec :hover seul, la
+     grille se remettait à plat une fraction de seconde puis se
+     rouvrait. Ici elle ne se referme qu'en quittant la grille.
+     ------------------------------------------------------- */
+  var cardsGrid = $('.cards');
+  var survolLarge = window.matchMedia('(hover: hover) and (min-width: 1081px)');
+  if (cardsGrid) {
+    var cards = $$('.card', cardsGrid);
+    var ouvrirTimer = null;
+
+    function ouvrir(i) {
+      if (!survolLarge.matches) return;
+      cardsGrid.setAttribute('data-open', String(i + 1));
+      cards.forEach(function (c, k) { c.classList.toggle('is-open', k === i); });
+    }
+    function fermer() {
+      clearTimeout(ouvrirTimer);
+      cardsGrid.removeAttribute('data-open');
+      cards.forEach(function (c) { c.classList.remove('is-open'); });
+    }
+
+    cards.forEach(function (card, i) {
+      card.addEventListener('mouseenter', function () {
+        // Un court délai : balayer la rangée d'un geste ne déclenche pas
+        // quatre ouvertures successives, seule la carte où l'on s'arrête s'ouvre.
+        clearTimeout(ouvrirTimer);
+        ouvrirTimer = setTimeout(function () { ouvrir(i); }, 70);
+      });
+    });
+    cardsGrid.addEventListener('mouseleave', fermer);
+    // passage sous 1081 px ou sur écran tactile : on rend la grille normale
+    if (survolLarge.addEventListener) survolLarge.addEventListener('change', fermer);
+  }
+
+  /* -------------------------------------------------------
      8. Compteurs animés
      ------------------------------------------------------- */
   function runCounter(el) {

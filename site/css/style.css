@@ -44,6 +44,7 @@
   /* --- Animation --- */
   --ease: cubic-bezier(.22,.61,.36,1);
   --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-soft: cubic-bezier(.45,0,.2,1);   /* départ et arrivée en douceur */
   --dur: .7s;
 
   --header-h: 92px;
@@ -683,16 +684,16 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
      donc un demi-cercle quelle que soit la colonne. */
   border-radius:var(--arch);
   display:flex; align-items:flex-end;
-  transition:transform .55s var(--ease-out), box-shadow .55s var(--ease-out);
 }
 .card:hover{ z-index:2; }
 .card__media{ position:absolute; inset:0; }
 .card__media img{
   width:100%; height:100%; object-fit:cover;
   filter:grayscale(1) contrast(1.05) brightness(.82);
-  transition:transform .9s var(--ease-out), filter .7s var(--ease);
+  transition:transform 1.4s var(--ease-soft), filter .9s var(--ease-soft);
 }
-.card:hover .card__media img{ transform:scale(1.09); filter:grayscale(0) brightness(.9); }
+.card:hover .card__media img,
+.card.is-open .card__media img{ transform:scale(1.06); filter:grayscale(0) brightness(.9); }
 /* Dégradé noir neutre : la photo garde ses couleurs, seul le bas
    s'assombrit pour porter le texte. */
 .card__media::after{
@@ -702,24 +703,19 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
     rgba(253,252,248,.55) 58%,
     rgba(253,252,248,.94) 84%,
     var(--cream-warm) 100%);
-  transition:background .6s var(--ease);
 }
-.card:hover .card__media::after{
-  background:linear-gradient(180deg,
-    transparent 34%,
-    rgba(253,252,248,.48) 60%,
-    rgba(253,252,248,.92) 84%,
-    var(--cream-warm) 100%);
-}
+/* Pas de second dégradé au survol : un navigateur ne sait pas animer
+   un gradient, il basculait d'un coup au milieu de la transition. */
 
 .card__body{ position:relative; z-index:2; padding:36px 24px 42px; text-align:center; width:100%; }
 .card__title{ font-size:var(--f-2xl); color:var(--green); }
 .card__body p{ font-size:var(--f-sm); color:var(--ink-soft); line-height:1.6; }
 .card__body .ornament--sm{
   transform:scaleX(.55); opacity:.7;
-  transition:transform .55s var(--ease-out), opacity .4s;
+  transition:transform .8s var(--ease-soft), opacity .8s var(--ease-soft);
 }
-.card:hover .ornament--sm{ transform:scaleX(1); opacity:1; }
+.card:hover .ornament--sm,
+.card.is-open .ornament--sm{ transform:scaleX(1); opacity:1; }
 
 /* Survol d'une expertise : la carte prend deux parts de la rangée, les
    trois autres se resserrent. On anime la largeur des colonnes plutôt
@@ -729,13 +725,36 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
    (deux colonnes partagées par deux rangées) élargir une carte
    élargirait aussi celle du dessous. */
 @media (hover:hover) and (min-width:1081px){
-  .cards{ transition:grid-template-columns .6s var(--ease-out); }
-  .cards:has(.card:nth-child(1):hover){ grid-template-columns:2fr 1fr 1fr 1fr; }
-  .cards:has(.card:nth-child(2):hover){ grid-template-columns:1fr 2fr 1fr 1fr; }
-  .cards:has(.card:nth-child(3):hover){ grid-template-columns:1fr 1fr 2fr 1fr; }
-  .cards:has(.card:nth-child(4):hover){ grid-template-columns:1fr 1fr 1fr 2fr; }
-  /* le texte profite de la largeur gagnée au lieu de rester en colonne */
-  .card__body p{ max-width:34ch; margin-inline:auto; }
+  /* L'état ouvert est posé par le script (data-open), pas par :hover :
+     entre deux cartes la souris traverse 8 px de vide, et la grille se
+     remettait à plat puis se rouvrait — un double mouvement. */
+  .cards{
+    container-type:inline-size;
+    transition:grid-template-columns .85s var(--ease-soft);
+  }
+  .cards[data-open="1"]{ grid-template-columns:2fr 1fr 1fr 1fr; }
+  .cards[data-open="2"]{ grid-template-columns:1fr 2fr 1fr 1fr; }
+  .cards[data-open="3"]{ grid-template-columns:1fr 1fr 2fr 1fr; }
+  .cards[data-open="4"]{ grid-template-columns:1fr 1fr 1fr 2fr; }
+
+  /* Texte à largeur fixe : celle d'une carte resserrée. Sans ça il se
+     recomposait en cours d'élargissement, passait de trois lignes à
+     deux d'un coup et le titre sautait. Il ne bouge plus, et les titres
+     des quatre cartes restent alignés. 100cqi = largeur de la grille,
+     constante pendant l'animation ; 24px = les trois espaces. */
+  .card__body > *{
+    width:calc((100cqi - 24px) / 5 - 48px);
+    margin-inline:auto;
+  }
+
+  /* La carte ouverte prend la lumière, les autres se retirent un peu.
+     Sur le contenu et non sur la carte : l'animation d'apparition liée
+     au scroll tient l'opacité de la carte elle-même, et une animation
+     l'emporte sur toute règle ordinaire. */
+  .card__media,
+  .card__body{ transition:opacity .8s var(--ease-soft); }
+  .cards[data-open] .card:not(.is-open) .card__media,
+  .cards[data-open] .card:not(.is-open) .card__body{ opacity:.62; }
 }
 
 /* ---------------------------------------------------------
