@@ -721,6 +721,23 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
 }
 .card:hover .ornament--sm{ transform:scaleX(1); opacity:1; }
 
+/* Survol d'une expertise : la carte prend deux parts de la rangée, les
+   trois autres se resserrent. On anime la largeur des colonnes plutôt
+   que d'étaler la carte sur deux cases : un vrai span renverrait une
+   carte à la ligne suivante et toute la grille sauterait.
+   Uniquement avec une souris et en rangée de quatre — sur tablette
+   (deux colonnes partagées par deux rangées) élargir une carte
+   élargirait aussi celle du dessous. */
+@media (hover:hover) and (min-width:1081px){
+  .cards{ transition:grid-template-columns .6s var(--ease-out); }
+  .cards:has(.card:nth-child(1):hover){ grid-template-columns:2fr 1fr 1fr 1fr; }
+  .cards:has(.card:nth-child(2):hover){ grid-template-columns:1fr 2fr 1fr 1fr; }
+  .cards:has(.card:nth-child(3):hover){ grid-template-columns:1fr 1fr 2fr 1fr; }
+  .cards:has(.card:nth-child(4):hover){ grid-template-columns:1fr 1fr 1fr 2fr; }
+  /* le texte profite de la largeur gagnée au lieu de rester en colonne */
+  .card__body p{ max-width:34ch; margin-inline:auto; }
+}
+
 /* ---------------------------------------------------------
    CHIFFRES — cachets de cire (images fournies)
    Le chiffre est gravé dans l'image : pas de texte superposé,
@@ -1130,7 +1147,7 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
 }
 .quote cite{
   display:block; margin-top:18px; font-style:normal;
-  color:var(--gold-ink); font-size:var(--f-sm); font-weight:500;
+  color:var(--green); font-size:var(--f-sm); font-weight:500;   /* même vert que le texte de l'avis */
   letter-spacing:.14em; text-transform:uppercase;
 }
 
