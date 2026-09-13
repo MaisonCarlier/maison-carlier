@@ -1,16 +1,15 @@
 /* Réception du formulaire de devis → envoi d'un mail via Resend.
    La clé API reste côté serveur : elle ne doit jamais partir dans le HTML. */
 
-// Tant que maison-carlier.fr n'est pas vérifié chez Resend, l'envoi n'est autorisé
-// que vers l'adresse du compte. Une fois le domaine vérifié, basculer sur
-// ateliers@maison-carlier.fr via la variable d'environnement, sans toucher au code.
-const DESTINATAIRE = process.env.MAIL_DESTINATAIRE || 'contact.maison.carlier@gmail.com';
+// Boîte IONOS de l'atelier. maison-carlier.fr est vérifié chez Resend, l'envoi
+// vers cette adresse est donc autorisé. MAIL_DESTINATAIRE dans Vercel, si elle
+// est définie, prend le pas (utile pour tester sur une autre boîte).
+const DESTINATAIRE = process.env.MAIL_DESTINATAIRE || 'ateliers@maison-carlier.fr';
 
-// Expéditeur réglable depuis Vercel, comme le destinataire. Par défaut,
-// l'adresse de test Resend : la seule autorisée tant que maison-carlier.fr
-// n'est pas vérifié, et qui n'envoie que vers l'adresse du compte Resend.
-// Une fois le domaine vérifié : MAIL_EXPEDITEUR = Site Maison Carlier <site@maison-carlier.fr>
-const EXPEDITEUR = process.env.MAIL_EXPEDITEUR || 'Site Maison Carlier <onboarding@resend.dev>';
+// Expéditeur sur le domaine vérifié. site@ n'a pas besoin d'exister comme
+// boîte : il sert seulement à signer l'envoi, les réponses partent vers le
+// client grâce à reply_to. Réglable par MAIL_EXPEDITEUR dans Vercel.
+const EXPEDITEUR = process.env.MAIL_EXPEDITEUR || 'Site Maison Carlier <site@maison-carlier.fr>';
 
 const SUJETS = ['Couverture', 'Charpente', 'Zinguerie', 'Rénovation / isolation', 'Autre'];
 
