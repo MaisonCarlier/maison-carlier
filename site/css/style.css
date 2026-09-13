@@ -737,6 +737,15 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
   .cards[data-open="3"]{ grid-template-columns:1fr 1fr 2fr 1fr; }
   .cards[data-open="4"]{ grid-template-columns:1fr 1fr 1fr 2fr; }
 
+  /* Filet de sécurité : si le script n'a pas pris la main (fichier en
+     cache, bloqué, en erreur), le survol seul élargit encore la carte.
+     :not([data-open]) le coupe dès que le script est actif, pour ne pas
+     retrouver le double mouvement dans l'espace entre deux cartes. */
+  .cards:not([data-open]):has(.card:nth-child(1):hover){ grid-template-columns:2fr 1fr 1fr 1fr; }
+  .cards:not([data-open]):has(.card:nth-child(2):hover){ grid-template-columns:1fr 2fr 1fr 1fr; }
+  .cards:not([data-open]):has(.card:nth-child(3):hover){ grid-template-columns:1fr 1fr 2fr 1fr; }
+  .cards:not([data-open]):has(.card:nth-child(4):hover){ grid-template-columns:1fr 1fr 1fr 2fr; }
+
   /* Texte à largeur fixe : celle d'une carte resserrée. Sans ça il se
      recomposait en cours d'élargissement, passait de trois lignes à
      deux d'un coup et le titre sautait. Il ne bouge plus, et les titres
