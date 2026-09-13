@@ -18,6 +18,9 @@
   --green-deep:  #1A4126;   /* alias — même vert */
   --green-night: #1A4126;   /* alias — même vert */
   --green-light: #27603A;   /* le vert éclairci, au survol */
+  /* Or éclairci au survol. Assombri, il tombait à 3,9:1 sous le texte
+     vert ; éclairci il monte à 6,5:1 et le changement reste net. */
+  --gold-hover:  #E3BF74;
   --green-soft:  #E7EDE7;
 
   --cream:       #FAF8F2;   /* crème clair */
@@ -263,9 +266,9 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
 /* ---------------------------------------------------------
    BOUTONS
    --------------------------------------------------------- */
-/* Le bouton ne bouge pas : une teinte monte du bas, comme de l'encre
-   qui imbibe le papier. Le remplissage se fait via background-size,
-   donc aucun calque au-dessus du texte. */
+/* Boutons : aucun mouvement. Au survol, seules les couleurs changent
+   (fond, texte, bordure), en fondu court. Pas de remplissage qui monte,
+   pas de déplacement, pas d'effet au clic. */
 .btn{
   position:relative;
   display:inline-flex; align-items:center; justify-content:center;
@@ -273,55 +276,28 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
   min-height:44px;   /* plancher tactile : on tombait à 43 px */
   font-size:var(--f-xs); font-weight:450; letter-spacing:.07em; text-transform:uppercase;
   border:1px solid transparent;
-  background-repeat:no-repeat;
-  background-position:center bottom;
-  background-size:100% 0%;
-  transition:
-    background-size .5s var(--ease-out),
-    color .45s var(--ease),
-    border-color .45s var(--ease);
+  background-image:none;
+  transition:background-color .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
 }
-.btn:hover{ background-size:100% 100%; }
-.btn:active{ background-size:100% 100%; opacity:.9; }
 .btn:focus-visible{ outline:1px solid var(--gold); outline-offset:3px; }
 
-/* Bouton or plein : un voile sombre monte du bas, l'or reste le même */
-.btn--gold{
-  background-color:var(--gold);
-  background-image:linear-gradient(rgba(26,65,38,.22),rgba(26,65,38,.22));
-  color:var(--green-deep);
-}
+/* Or plein : au survol il prend la teinte que donnait l'ancien voile */
+.btn--gold{ background-color:var(--gold); color:var(--green-deep); }
+.btn--gold:hover{ background-color:var(--gold-hover); }
 
-/* Boutons filaires : le fond se remplit, le texte s'inverse */
-.btn--ghost{
-  border-color:rgba(255,255,255,.5);
-  background-image:linear-gradient(var(--cream),var(--cream));
-  color:var(--white);
-}
-.btn--ghost:hover{ color:var(--green-deep); border-color:var(--cream); }
+/* Boutons filaires : au survol le fond prend la couleur, le texte s'inverse */
+.btn--ghost{ border-color:rgba(255,255,255,.5); color:var(--white); }
+.btn--ghost:hover{ background-color:var(--cream); color:var(--green-deep); border-color:var(--cream); }
 
-.btn--outline{
-  border-color:rgba(26,65,38,.35);
-  background-image:linear-gradient(var(--gold),var(--gold));
-  color:var(--green);
-}
-.btn--outline:hover{ color:var(--green-deep); border-color:var(--gold); }
+.btn--outline{ border-color:rgba(26,65,38,.35); color:var(--green); }
+.btn--outline:hover{ background-color:var(--gold); color:var(--green-deep); border-color:var(--gold); }
 
-/* Vert plein dès le départ : au survol il s'éclaircit, sans remplissage
-   qui monte. La transition porte donc sur la couleur, pas sur la taille
-   du fond comme pour les autres boutons. */
-.btn--ink{
-  background-color:var(--green);
-  background-image:none;
-  border-color:var(--green);
-  color:var(--cream);
-  transition:background-color .35s var(--ease), border-color .35s var(--ease);
-}
+/* Vert plein : au survol il s'éclaircit */
+.btn--ink{ background-color:var(--green); border-color:var(--green); color:var(--cream); }
 .btn--ink:hover{
   background-color:var(--green-light);
   border-color:var(--green-light);
 }
-.btn--ink:active{ background-color:var(--green); opacity:1; }
 
 .btn--full{ width:100%; }
 
@@ -366,7 +342,7 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
   display:flex; align-items:center; gap:12px;
 }
 
-/* Bouton d'appel : le numéro reste lisible, l'icône sonne au survol */
+/* Bouton d'appel : au survol, fond or et texte vert, sans mouvement */
 .nav__phone{
   display:inline-flex; align-items:center; gap:9px;
   padding:10px 16px;
@@ -374,23 +350,15 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
   font-size:var(--f-xs); font-weight:450; letter-spacing:.03em;
   color:var(--white);
   white-space:nowrap;
-  background-repeat:no-repeat; background-position:center bottom; background-size:100% 0%;
-  background-image:linear-gradient(var(--gold),var(--gold));
-  transition:color .35s var(--ease), background-size .5s var(--ease-out);
+  transition:background-color .3s var(--ease), color .3s var(--ease);
 }
 .nav__phone svg{
   width:16px; height:16px; flex:none;
   fill:var(--gold); stroke:none;
-  transition:transform .45s var(--ease-out), fill .35s var(--ease);
+  transition:fill .3s var(--ease);
 }
-.nav__phone:hover{ color:var(--green-deep); background-size:100% 100%; }
-.nav__phone:hover svg{ fill:var(--green-deep); animation:phoneRing .6s var(--ease) 1; }
-@keyframes phoneRing{
-  0%,100%{ transform:rotate(0); }
-  20%{ transform:rotate(-14deg); }
-  45%{ transform:rotate(12deg); }
-  70%{ transform:rotate(-7deg); }
-}
+.nav__phone:hover{ background-color:var(--gold); color:var(--green-deep); }
+.nav__phone:hover svg{ fill:var(--green-deep); }
 .nav__link{
   position:relative;
   color:rgba(255,255,255,.88);
@@ -1010,7 +978,7 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
   width:9px; height:9px;
   border:1px solid rgba(26,65,38,.45);
   transform:rotate(45deg);
-  transition:background-color .4s var(--ease), border-color .4s var(--ease), transform .45s var(--ease-out);
+  transition:background-color .3s var(--ease), border-color .3s var(--ease);
 }
 .carousel__dots button.is-active::before{
   background:var(--gold); border-color:var(--gold);
@@ -1176,9 +1144,9 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
   width:10px; height:10px;
   border:1px solid rgba(26,65,38,.45);
   transform:rotate(45deg);
-  transition:background-color .4s var(--ease), border-color .4s var(--ease), transform .45s var(--ease-out);
+  transition:background-color .3s var(--ease), border-color .3s var(--ease);
 }
-.quotes__dots button:hover::before{ border-color:var(--gold-ink); transform:rotate(45deg) scale(1.2); }
+.quotes__dots button:hover::before{ border-color:var(--gold-ink); }
 .quotes__dots button.is-active::before{
   background:var(--gold); border-color:var(--gold);
   transform:rotate(45deg) scale(1.5);
@@ -1366,25 +1334,27 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
    24 px, deux liens voisins se confondent sous le pouce.
    Le rembourrage s'ajoute en hauteur seulement, la mise en page
    du pied de page ne bouge pas. */
-.footer__col a,
+.footer__col li a,
 .devis__contact a,
 .faq__more a{
   display:inline-block;
   padding-block:3px;
   min-height:24px;
 }
-.footer__col a{ position:relative; transition:color .3s; }
-.footer__col a:hover{ color:var(--gold); }
+.footer__col li a{ position:relative; transition:color .3s; }
+/* li a : seuls les liens des listes. Le bouton devis et les icônes
+   sociales ont leurs propres couleurs de survol. */
+.footer__col li a:hover{ color:var(--gold); }
 .footer__col--cta{ display:grid; gap:22px; align-content:start; justify-items:start; }
 
 .socials{ display:flex; gap:14px; }
 .socials a{
   width:52px; height:52px; display:grid; place-items:center;
   border:1px solid rgba(255,255,255,.28);
-  transition:background-color .35s var(--ease), border-color .35s, transform .35s var(--ease-out);
+  transition:background-color .3s var(--ease), border-color .3s var(--ease), color .3s var(--ease);
 }
 .socials svg{ width:25px; height:25px; fill:currentColor; stroke:none; }
-.socials a:hover{ background:var(--gold); border-color:var(--gold); color:var(--green-deep); transform:translateY(-3px); }
+.socials a:hover{ background:var(--gold); border-color:var(--gold); color:var(--green-deep); }
 
 .footer__bottom{
   display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between;
@@ -1419,6 +1389,9 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
   }
   .callbar__item--call{ color:var(--white); border-right:1px solid rgba(255,255,255,.16); }
   .callbar__item--quote{ background:var(--gold); color:var(--green-deep); }
+  .callbar__item{ transition:background-color .3s var(--ease); }
+  .callbar__item--call:hover{ background:var(--green-light); }
+  .callbar__item--quote:hover{ background:var(--gold-hover); }
 
   /* le pied de page ne doit pas finir sous la barre */
   .footer__bottom{ padding-bottom:76px; }
@@ -1531,19 +1504,16 @@ img.is-missing{ visibility:hidden; }
   .nav.is-open{ transform:translateX(0); }
   .nav__list{ display:flex; flex-direction:column; align-items:center; gap:26px; }
   .nav__actions{ display:flex; flex-direction:column; align-items:center; gap:26px; justify-self:auto; }
-  .nav__phone{ font-size:var(--f-lg); opacity:0; transform:translateY(18px); animation-delay:.40s; }
+  .nav__phone{ font-size:var(--f-lg); }
   .nav__cta{ justify-self:auto; }
 
   .nav__link{ font-size:var(--f-xl); font-family:var(--font-serif); opacity:0; transform:translateY(18px); }
-  .nav.is-open .nav__link,
-  .nav.is-open .nav__phone,
-  .nav.is-open .nav__cta{ animation:navIn .5s var(--ease-out) forwards; }
+  .nav.is-open .nav__link{ animation:navIn .5s var(--ease-out) forwards; }
   .nav.is-open .nav__link:nth-child(1){ animation-delay:.10s; }
   .nav.is-open .nav__link:nth-child(2){ animation-delay:.16s; }
   .nav.is-open .nav__link:nth-child(3){ animation-delay:.22s; }
   .nav.is-open .nav__link:nth-child(4){ animation-delay:.28s; }
   .nav.is-open .nav__link:nth-child(5){ animation-delay:.34s; }
-  .nav__cta{ opacity:0; transform:translateY(18px); animation-delay:.46s; }
   @keyframes navIn{ to{ opacity:1; transform:none; } }
   .burger{ display:block; position:relative; z-index:1001; }
 
