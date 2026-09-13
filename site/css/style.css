@@ -437,11 +437,13 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
    --------------------------------------------------------- */
 .hero{
   position:relative;
-  /* 100vh se mesure barre d'URL dépliée : sur iOS la section se
-     retrouve amputée puis rallongée pendant le défilement.
-     dvh suit la hauteur réellement visible. */
-  min-height:min(100vh,940px);
-  min-height:min(100dvh,940px);
+  /* L'écran d'accueil occupe toute la hauteur, à toutes les tailles.
+     svh plutôt que dvh : dvh suit la barre d'URL de Safari, donc le
+     hero grandit quand elle se replie et tout le contenu en dessous
+     saute pendant le défilement. svh est fixe : l'écran est rempli au
+     chargement et rien ne bouge ensuite. vh sert de repli. */
+  min-height:100vh;
+  min-height:100svh;
   display:flex; align-items:center;
   padding-top:var(--header-h);
   overflow:hidden;
@@ -1555,7 +1557,7 @@ img.is-missing{ visibility:hidden; }
   .devis__inner{ grid-template-columns:1fr; }
 
   /* Hero : la flèche de défilement tomberait derrière la barre d'appel */
-  .hero{ min-height:auto; padding-bottom:64px; }
+  .hero{ padding-bottom:64px; }
   .hero__scroll{ display:none; }
   .header__logo img{ width:112px; }
 
@@ -1614,6 +1616,10 @@ img.is-missing{ visibility:hidden; }
   .form{ grid-template-columns:1fr; }
   .footer__grid{ grid-template-columns:1fr; }
   .hero__actions .btn{ width:100%; }
+  /* Le <br> de l'accroche est calé pour la largeur bureau : sur un
+     320 px, « rénovation » se retrouvait seul sur sa ligne. */
+  .hero__text br{ display:none; }
+  .hero__text{ text-wrap:pretty; }
   .footer__bottom{ flex-direction:column; }
 
   /* Sections moins étirées : 72 px de respiration en haut ET en bas
