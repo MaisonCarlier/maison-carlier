@@ -708,14 +708,24 @@ section[id]{ scroll-margin-top:calc(var(--header-h) + 20px); }
    un gradient, il basculait d'un coup au milieu de la transition. */
 
 .card__body{ position:relative; z-index:2; padding:36px 24px 42px; text-align:center; width:100%; }
-.card__title{ font-size:var(--f-2xl); color:var(--green); }
+/* Forum n'existe qu'en 400 : un font-weight gras serait simulé et baveux.
+   Un contour fin dans la couleur du texte épaissit le trait proprement. */
+.card__title{
+  font-size:clamp(2.15rem, 1.7rem + 1.8vw, 3.05rem);
+  color:var(--green);
+  -webkit-text-stroke:.6px currentColor;
+  letter-spacing:.01em;
+}
 .card__body p{ font-size:var(--f-sm); color:var(--ink-soft); line-height:1.6; }
+/* Au repos seuls le centre et la fleur de lys sont visibles ; au survol
+   les filets se dévoilent vers les bords. Un clip plutôt qu'un scaleX,
+   qui écrasait la fleur. */
 .card__body .ornament--sm{
-  transform:scaleX(.55); opacity:.7;
-  transition:transform .8s var(--ease-soft), opacity .8s var(--ease-soft);
+  clip-path:inset(0 22.5%); opacity:.7;
+  transition:clip-path .8s var(--ease-soft), opacity .8s var(--ease-soft);
 }
 .card:hover .ornament--sm,
-.card.is-open .ornament--sm{ transform:scaleX(1); opacity:1; }
+.card.is-open .ornament--sm{ clip-path:inset(0 0); opacity:1; }
 
 /* Survol d'une expertise : la carte prend deux parts de la rangée, les
    trois autres se resserrent. On anime la largeur des colonnes plutôt
@@ -1552,6 +1562,10 @@ img.is-missing{ visibility:hidden; }
     padding:80px 24px;
   }
   .nav.is-open{ transform:translateX(0); }
+  /* backdrop-filter (et transform) font du header le bloc conteneur de
+     ses enfants fixed : dès le scroll, le panneau ne couvrait plus que
+     la hauteur du header. On s'en passe ici, le fond reste opaque à 96 %. */
+  .header.is-scrolled{ backdrop-filter:none; }
   .nav__list{ display:flex; flex-direction:column; align-items:center; gap:26px; }
   /* stretch : le bloc prend la largeur du plus large des deux boutons,
      et les deux s'étirent à cette largeur — ils font la même taille. */
